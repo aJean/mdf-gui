@@ -1,0 +1,24 @@
+{
+  "name": "mf-gui",
+  "version": "1.0.0",
+  "description": "mf-enhance dev gui tools",
+  "main": "index.js",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
+    "electron": "^7.1.2",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "webpack": "^4.41.2"
+  },
+  "scripts": {
+    "start": "npx electron src/app.js"
+  },
+  "author": "aJean",
+  "repository": "https://github.com/aJean/mf-gui.git",
+  "license": "ISC"
+}
