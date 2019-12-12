@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import Home from './home/home';
 
 /**
  * @file 控制台 app
  */
 
-const Home = () => <div>hello electron!!</div>;
 
 ReactDOM.render(<Home />, document.getElementById('app'));

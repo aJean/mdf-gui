@@ -6,14 +6,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const extractMini = new MiniCssExtractPlugin({ filename: '[name].css' });
-const htmlPlugin = new HtmlWebpackPlugin({
-  filename: 'index.html',
-  template: 'src/template.html',
-  inject: true,
-  showErrors: true,
-  title: '控制台'
-});
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -76,14 +69,21 @@ module.exports = {
     ]
   },
   plugins: [
-    extractMini,
-    htmlPlugin,
+    new CopyPlugin([{ from: './assets', to: './dist/assets' }]),
+    new MiniCssExtractPlugin({ filename: '[name].css' }),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'src/template.html',
+      inject: true,
+      title: '控制台',
+      static: '/dist/assets'
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"'
       }
     }),
-    new webpack.HotModuleReplacementPlugin()
+    // new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx']
