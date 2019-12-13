@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'development',
   devtool: 'eval',
+  target: 'electron-renderer',
   optimization: {
     minimize: false,
 

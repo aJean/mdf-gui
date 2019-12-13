@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Layout } from 'antd';
-import './home.less'
+import * as fs from 'fs';
+import fg = require('fast-glob');
+import './home.less';
 
 /**
  * @file 控制台主窗口
@@ -8,6 +10,11 @@ import './home.less'
 
 const { Header, Footer, Sider, Content } = Layout;
 export default class Home extends React.Component {
+  componentDidMount() {
+    const path = '/Users/qiaoyue3/Workspace/mfdemo/src/**';
+    console.log(fg.sync(path));
+  }
+
   render() {
     return (
       <Layout>
