@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Layout } from 'antd';
-import './home.less';
+import './home.less'
 
 /**
  * @file 控制台主窗口

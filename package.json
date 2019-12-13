@@ -12,7 +12,6 @@
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "babel-plugin-import": "^1.13.0",
-    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.3.0",
     "electron": "^7.1.2",
     "file-loader": "^5.0.2",
@@ -28,7 +27,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --inline & npx electron ."
+    "start": "webpack-dev-server --inline & npx electron .",
+    "dev": "webpack-dev-server --inline"
   },
   "author": "aJean",
   "repository": "https://github.com/aJean/mf-gui.git",

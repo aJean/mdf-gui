@@ -6,7 +6,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -63,26 +62,36 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        exclude: /node_modules/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+        include: /src|node_modules\/antd|node_modules\/@ant-design/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              modifyVars: {
+                'primary-color': '#1890ff'
+              },
+              javascriptEnabled: true
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
-    new CopyPlugin([{ from: './assets', to: './dist/assets' }]),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/template.html',
       inject: true,
-      title: '控制台',
-      static: '/dist/assets'
+      title: '控制台'
     }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"'
       }
-    }),
+    })
     // new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
