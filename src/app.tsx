@@ -7,5 +7,15 @@ import 'antd/dist/antd.less';
  * @file 控制台 app
  */
 
+function render(App) {
+  ReactDOM.render(<App />, document.getElementById('app'));
+}
 
-ReactDOM.render(<Home />, document.getElementById('app'));
+render(Home);
+
+if (module.hot) {
+  module.hot.accept(function() {
+    const Home = require('./home/home').default;
+    render(Home);
+  });
+}

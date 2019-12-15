@@ -5,7 +5,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
@@ -46,8 +45,8 @@ module.exports = {
     historyApiFallback: true,
     host: '0.0.0.0',
     port: '3000',
-    inline: true,
     hot: true,
+    inline: true,
     contentBase: 'dist/'
   },
   module: {
@@ -65,7 +64,7 @@ module.exports = {
         test: /\.less$/,
         include: /src|node_modules\/antd|node_modules\/@ant-design/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           {
             loader: 'less-loader',
@@ -81,7 +80,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: '[name].css' }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/template.html',
