@@ -1,13 +1,19 @@
-import * as fs from 'fs';
 import fg = require('fast-glob');
+import dirTree = require('directory-tree');
 
 /**
  * @file 文件工具
  */
 
 function find(path?: string) {
-  path = '/Users/qiaoyue/WorkSpace/mfdemo/src/**';
-  return fg.sync(path);
+  let id = 0;
+  const formatNode = item => {
+    item.title = item.name;
+    item.key = id++;
+  };
+
+  const tree = dirTree(path + '/src', null, formatNode, formatNode);
+  return [tree];
 }
 
 export default {
