@@ -14,7 +14,7 @@ export default {
     File_Int
   },
   initProject: createAction(Project_Init),
-  initFile: createAction(File_Int, function(val) {
-    return FileTools.find(val);
+  initFile: createAction(File_Int, function(path: string) {
+    return FileTools.findProjectFiles(path);
   })
 };

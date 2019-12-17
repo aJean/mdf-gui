@@ -10,6 +10,9 @@ module.exports = {
   mode: 'development',
   devtool: 'eval',
   target: 'electron-renderer',
+  node: {
+    __dirname: true
+  },
   optimization: {
     minimize: false,
 
