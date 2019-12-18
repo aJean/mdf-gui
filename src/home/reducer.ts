@@ -8,7 +8,7 @@ import FileTools from '../util/file';
 
 const types = action.types;
 const projectState = FileTools.readConfig();
-const fileState = { list: [], newList: null };
+const fileState = { list: [], newList: null, entryFile: null };
 
 /**
  * 项目信息 reducer
@@ -28,7 +28,14 @@ export const projectReducer = handleActions(
 export const fileReducer = handleActions(
   {
     [types.File_Int]: function(state, action: any) {
-      return { ...state, list: action.payload };
+      const list = action.payload;
+      let entryFile = null;
+      // 默认展示 pkg 文件
+      if (list) {
+        entryFile = list[0].path + '/pkg.js';
+      }
+
+      return { ...state, list, entryFile };
     }
   },
   fileState

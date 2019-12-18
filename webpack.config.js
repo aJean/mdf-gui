@@ -5,6 +5,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -79,10 +80,22 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        include: /src|node_modules\/codemirror/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       }
     ]
   },
   plugins: [
+    // dev 模式使用 dev-server 提供静态资源
+    new CopyWebpackPlugin([
+      { from: 'assets', to: 'assets' }
+    ]),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/template.html',

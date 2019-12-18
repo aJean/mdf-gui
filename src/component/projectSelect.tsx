@@ -45,7 +45,7 @@ export default class ProjectSelect extends React.Component<any, any> {
   render() {
     const { path } = this.props;
     return (
-      <div className='project-select'>
+      <div className='mf-select'>
         <label>
           项目路径: <em>{path}</em>
         </label>
