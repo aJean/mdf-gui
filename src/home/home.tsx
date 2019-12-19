@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Layout } from 'antd';
-import { Tree, Button, Modal, Progress } from 'antd';
+import { Layout, Tree, Button, Modal, Progress } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import action from './action';
@@ -22,7 +21,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    initProjectAction: bindActionCreators(action.initProject, dispatch),
     initFileAction: bindActionCreators(action.initFile, dispatch)
   };
 };
@@ -34,19 +32,20 @@ class Home extends React.Component<any, any> {
 
   componentDidMount() {
     const { project, initFileAction } = this.props;
+    console.log(project)
     // 加载文件
     initFileAction(project.path);
   }
-
-  initHandle = val => {
-    this.props.initProjectAction(val);
-  };
 
   deployHandle = () => {
     this.setState({ visible: true });
   };
 
   changeFileHandle = () => {};
+
+  changRouter = path => {
+    this.props.history.replace(path);
+  };
 
   renderFileTree(list) {
     const { TreeNode } = Tree;
@@ -63,27 +62,17 @@ class Home extends React.Component<any, any> {
     });
   }
 
-  /**
-   * 项目切换
-   */
-  onProjectChange = project => {
-    const { initFileAction, initProjectAction } = this.props;
-    initProjectAction(project);
-    initFileAction(project.path);
-  };
-
   render() {
     const { project, file } = this.props;
     const fileList = file.list;
     const keys = fileList && fileList.map(data => String(data.key));
 
     return (
-      <Layout className='mf-layout'>
-        <Header>
-          <h1 className='header-title'>
-            Mf-GUI<span>插件开发工具</span>
-          </h1>
-          <ProjectSelect path={project.path} dispatch={this.onProjectChange} />
+      <Layout className='mf-home'>
+        <Header className='mf-home-header'>
+          <img src='./assets/logos/launch-logo.png' />
+          MF-PLUGIN-TOOLS
+          <ProjectSelect path={project.path} changeRouter={this.changRouter} />
         </Header>
         <Layout>
           <Sider>

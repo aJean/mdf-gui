@@ -23,8 +23,12 @@ function findProjectFiles(path?: string) {
  * 读取 project config
  */
 function readConfig() {
-  const config = fs.readFileSync(path.resolve(process.cwd(), 'config/project.json'));
-  return JSON.parse(config.toString());
+  try {
+    const config = fs.readFileSync(path.resolve(process.cwd(), 'config/project.json'));
+    return JSON.parse(config.toString());
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
@@ -36,7 +40,7 @@ function writeConfig(content: string) {
     const file = path.resolve(process.cwd(), 'config/project.json');
     return write.sync(file, content, { newline: true, overwrite: true });
   } catch (e) {
-    console.log(e);
+    return { code: -1, msg: e.message };
   }
 }
 

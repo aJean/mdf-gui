@@ -5,8 +5,10 @@
 const electron = require('electron');
 const { app, BrowserWindow, dialog } = electron;
 
-let win;
+// cache project opts
+global.info = { author: 'qiaoyue3' };
 
+let win;
 function createWindow() {
   win = new BrowserWindow({
     width: 1400,
@@ -38,7 +40,7 @@ function loadDevServer(win, limit = 5) {
         setTimeout(deep, 2000);
       }
     });
-  }
+  };
 
   deep();
 }

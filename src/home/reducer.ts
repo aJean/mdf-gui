@@ -1,13 +1,13 @@
 import { handleActions } from 'redux-actions';
 import action from './action';
-import FileTools from '../util/file';
+import File from '../util/file';
 
 /**
  * @file home reducer
  */
 
 const types = action.types;
-const projectState = FileTools.readConfig();
+const projectState = window['project'] = File.readConfig();
 const fileState = { list: [], newList: null, entryFile: null };
 
 /**

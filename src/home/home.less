@@ -1,7 +1,6 @@
 /** home console */
-#app {
-  background: rgb(213, 110, 110);
-  text-align: center;
+.mf-home {
+  height: 100vh;
 
   .ant-layout-header,
   .ant-layout-footer {
@@ -23,41 +22,37 @@
     color: #fff;
   }
 
-  .header-title {
-    position: absolute;
-    top: 0;
-    left: 50px;
+  .mf-home-header {
+    height: 60px;
     color: #fff;
-    font-size: 30px;
-    line-height: 80px;
-
-    span {
-      margin-left: 10px;
-      color: rgb(241, 243, 245);
-      font-size: 14px;
-    }
-  }
-
-  .mf-layout {
-    height: 100vh;
-  }
-
-  .mf-name {
-    padding: 10px 0;
-    font-weight: 600;
+    background: #000;
     font-size: 16px;
-  }
+    font-weight: 700;
+    line-height: 60px;
 
-  .mf-filelist {
-    text-align: left;
-  }
-
-  .mf-build {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    button {
-      margin: 0 20px;
+    img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
     }
+  }
+}
+
+.mf-name {
+  padding: 10px 0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.mf-filelist {
+  text-align: left;
+}
+
+.mf-build {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    margin: 0 20px;
   }
 }

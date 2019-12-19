@@ -107,7 +107,6 @@ module.exports = {
         NODE_ENV: '"development"'
       }
     })
-    // new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx']
