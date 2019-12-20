@@ -10,11 +10,11 @@ require('codemirror/mode/javascript/javascript');
  * @file web ide
  */
 
-export default class Code extends React.Component<any, any> {
+export default class Code extends React.PureComponent<any, any> {
   render() {
     const { path } = this.props;
     let code = 'nothing to show !!';
-console.log(path)
+
     if (path) {
       code = fs.readFileSync(path).toString();
     }

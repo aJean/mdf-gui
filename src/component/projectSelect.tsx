@@ -19,8 +19,8 @@ export default class ProjectSelect extends React.Component<any, any> {
         <label>
           项目路径: <em>{path}</em>
         </label>
-        <Button type='primary' size="small" onClick={this.clickHandle}>
-          change
+        <Button type='primary' icon="file" size="small" onClick={this.clickHandle}>
+          切换
         </Button>
       </div>
     );

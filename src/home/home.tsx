@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Layout, Tree, Button, Modal, Progress } from 'antd';
+import { Layout, Tree, Button, Modal, Progress, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import action from './action';
 import ProjectSelect from '../component/projectSelect';
 import FileIcon from '../component/fileCion';
 import Code from '../component/code';
+import Status from '../component/status';
 import './home.less';
 
 /**
@@ -32,7 +33,6 @@ class Home extends React.Component<any, any> {
 
   componentDidMount() {
     const { project, initFileAction } = this.props;
-    console.log(project)
     // 加载文件
     initFileAction(project.path);
   }
@@ -76,7 +76,16 @@ class Home extends React.Component<any, any> {
         </Header>
         <Layout>
           <Sider>
-            <div className='mf-name'>你的项目: {project.name}</div>
+            <div className='mf-name'>
+              {project.name}
+              <Button
+                type='primary'
+                size='small'
+                icon='play-circle'
+                onClick={this.deployHandle}>
+                部署
+              </Button>
+            </div>
             <div className='mf-filelist'>
               {fileList ? (
                 <Tree key={Date.now()} defaultExpandedKeys={keys} showIcon={true} onSelect={this.changeFileHandle}>
@@ -89,11 +98,8 @@ class Home extends React.Component<any, any> {
             <Code path={file.entryFile} />
           </Content>
         </Layout>
-        <Footer className='mf-build'>
-          <Button type='danger' onClick={this.deployHandle}>
-            部署
-          </Button>
-          <Button type='primary'>打包</Button>
+        <Footer className='mf-footer'>
+          <Status path={file.entryFile} />
         </Footer>
         <Modal
           title='项目部署中...'
