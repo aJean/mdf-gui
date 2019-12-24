@@ -9,14 +9,27 @@ import write = require('write');
  */
 
 function findProjectFiles(path?: string) {
-  let id = 0;
-  const formatNode = item => {
-    item.title = item.name;
-    item.key = id++;
+  let id = 1;
+  let entry = null;
+
+  const map = {};
+  const formatNode = (item: any) => {
+    const name = item.name;
+    let key = String(id++);
+
+    if (name == 'pkg.js') {
+      entry = item;
+      // ['0'] to select pkg
+      key = '0';
+    }
+
+    item.title = name;
+    item.key = key;
+    map[key] = item;
   };
 
   const tree = dirTree(path + '/src', null, formatNode, formatNode);
-  return tree ? [tree] : null;
+  return { tree, map, entry };
 }
 
 /**

@@ -8,13 +8,26 @@ import './status.less';
 
 export default class Status extends React.PureComponent<any, any> {
   render() {
-    const { path } = this.props;
-    const res = path ? Util.parseFile(path) : { type: '--' };
+    const { project, file } = this.props;
+    let type = '--';
+    let path = '--';
+
+    if (file) {
+      path = file.path;
+      type = Util.getFileType(path);
+    }
 
     return (
       <div className='mf-status'>
-        <div className='mf-status-file'>{path}</div>
-        <div className='mf-status-type'>UTF-8 {res.type}</div>
+        <div className='mf-status-file'>
+          <img src='/assets/logos/status-logo.svg' />
+          <em>{project.name}</em>
+          <span>{path}</span>
+        </div>
+        <div className='mf-status-type'>
+          <em>UTF-8</em>
+          <span>{type}</span>
+        </div>
       </div>
     );
   }

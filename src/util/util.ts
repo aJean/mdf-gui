@@ -11,8 +11,17 @@ const FileType = {
   'ts': 'TypeScript',
   'jsx': 'JavaScript React',
   'tsx': 'TypeScript React',
-  'css': 'CSS',
-  'less': 'LESS'
+  'css': 'Css',
+  'less': 'Less'
+};
+
+const CodeType = {
+  '.js': 'javascript',
+  '.ts': 'javascript',
+  '.jsx': 'javascript',
+  '.tsx': 'javascript',
+  '.css': 'text/css',
+  '.less': 'text/x-less'
 };
 
 function parseFile(file: string) {
@@ -24,7 +33,22 @@ function parseFile(file: string) {
   return { name, type: FileType[type] };
 }
 
+function getFileType(path: string) {
+  let tokens = path.split('/');
+  const name = tokens.pop();
+  tokens = name.split('.');
+  const type = tokens.pop();
+
+  return FileType[type];
+}
+
+function getCodeType(ext) {
+  return CodeType[ext];
+}
+
 export default {
   getShare,
-  parseFile
+  parseFile,
+  getFileType,
+  getCodeType
 };

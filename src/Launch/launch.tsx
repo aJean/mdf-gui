@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Helmet } from 'react-helmet';
 import action from '../home/action';
 import { Layout, Form, Modal, Input, Button } from 'antd';
 import FileTools from '../util/file';
@@ -60,6 +61,9 @@ class Launch extends React.Component<any, any> {
 
     return (
       <Layout className='mf-launch'>
+        <Helmet>
+          <title>mf-gui</title>
+        </Helmet>
         <Header className='mf-launch-header'>
           <img src='/assets/logos/launch-logo.png' />
           MF-PLUGIN-TOOLS

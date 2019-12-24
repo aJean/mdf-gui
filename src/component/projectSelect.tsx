@@ -13,13 +13,15 @@ export default class ProjectSelect extends React.Component<any, any> {
   };
 
   render() {
-    const { path } = this.props;
+    const { path, showLabel } = this.props;
     return (
       <div className='mf-select'>
-        <label>
-          项目路径: <em>{path}</em>
-        </label>
-        <Button type='primary' icon="file" size="small" onClick={this.clickHandle}>
+        {showLabel ? (
+          <label>
+            项目路径: <em>{path}</em>
+          </label>
+        ) : null}
+        <Button type='primary' icon='file' size='small' onClick={this.clickHandle}>
           切换
         </Button>
       </div>

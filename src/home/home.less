@@ -7,30 +7,31 @@
   }
 
   .ant-layout-sider {
-    background: #fff;
+    background: rgb(39, 39, 39);
+    .ant-tree li .ant-tree-node-content-wrapper {
+      padding: 0 8px 0 5px;
+      color: #fff;
+    }
+    .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      background: #444;
+      color: rgb(226, 192, 141);
+    }
+    .ant-tree li .ant-tree-node-content-wrapper:hover {
+      background: #444;
+    }
+    .ant-tree li span.ant-tree-iconEle {
+      margin-right: 5px;
+    }
   }
 
+  // as ide theme color
   .ant-layout-content {
+    padding-top: 10px;
     background: #263238;
     color: #fff;
   }
 
-  .mf-home-header {
-    height: 60px;
-    color: #fff;
-    background: rgb(38, 38, 38);
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 60px;
-
-    img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-    }
-  }
-
-  .mf-name {
+  .mf-info {
     padding: 10px 0;
     font-weight: 600;
     font-size: 16px;
@@ -48,6 +49,6 @@
   .mf-footer {
     padding: 0;
     height: 40px;
-    background: rgb(38, 38, 38);
+    background: rgb(32, 32, 32);
   }
 }

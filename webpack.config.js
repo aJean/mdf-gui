@@ -99,8 +99,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/template.html',
-      inject: true,
-      title: '控制台'
+      inject: true
     }),
     new webpack.DefinePlugin({
       'process.env': {

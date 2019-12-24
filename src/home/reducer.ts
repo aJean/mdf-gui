@@ -7,7 +7,7 @@ import File from '../util/file';
  */
 
 const types = action.types;
-const projectState = window['project'] = File.readConfig();
+const projectState = (window['project'] = File.readConfig());
 const fileState = { list: [], newList: null, entryFile: null };
 
 /**
@@ -28,14 +28,18 @@ export const projectReducer = handleActions(
 export const fileReducer = handleActions(
   {
     [types.File_Int]: function(state, action: any) {
-      const list = action.payload;
-      let entryFile = null;
-      // 默认展示 pkg 文件
-      if (list) {
-        entryFile = list[0].path + '/pkg.js';
+      const payload = action.payload;
+      let list = null;
+      let map = null;
+      let entry = null;
+
+      if (payload.tree) {
+        list = [payload.tree];
+        map = payload.map;
+        entry = payload.entry;
       }
 
-      return { ...state, list, entryFile };
+      return { ...state, list, entry, map };
     }
   },
   fileState

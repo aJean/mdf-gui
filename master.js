@@ -3,16 +3,18 @@
  */
 
 const electron = require('electron');
-const { app, BrowserWindow, dialog } = electron;
+const { app, BrowserWindow, dialog, Tray, nativeImage, Menu, globalShortcut } = electron;
 
 // cache project opts
 global.info = { author: 'qiaoyue3' };
 
-let win;
+let win, tray;
+
 function createWindow() {
   win = new BrowserWindow({
     width: 1400,
     height: 800,
+    icon: `${app.getAppPath()}/assets/logos/mf.ico`,
     backgroundColor: '#fff',
     webPreferences: {
       nodeIntegration: true
@@ -20,10 +22,46 @@ function createWindow() {
   });
 
   loadDevServer(win);
-  win.webContents.openDevTools();
+  // mac usually hide when click close
+  win.on('close', e => {
+    e.preventDefault();
+    win.hide();
+  });
+}
 
-  win.on('closed', () => {
-    win = null;
+/**
+ * tray 菜单
+ */
+function createTrayMenu() {
+  const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/logos/tray.png`);
+
+  tray = new Tray(icon);
+  tray.on('click', () => win && win.show());
+}
+
+/**
+ * dock 菜单
+ */
+function createDockMenu() {
+  const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/logos/dock.png`);
+
+  const dockTempalte = [
+    {
+      label: '还没想好放什么',
+      click() {
+        console.log('New Window');
+      }
+    }
+  ];
+
+  const dockMenu = Menu.buildFromTemplate(dockTempalte);
+  app.dock.setMenu(dockMenu);
+  app.dock.setIcon(icon);
+}
+
+function registerCmd() {
+  globalShortcut.register('CommandOrControl+Alt+J', function() {
+    win && win.webContents.openDevTools();
   });
 }
 
@@ -52,12 +90,17 @@ function loadFile(win) {
   win.loadURL(`file://${__dirname}/dist/index.html`);
 }
 
-app.on('ready', createWindow);
+app.on('ready', function() {
+  createTrayMenu();
+  createDockMenu();
+  createWindow();
+  registerCmd();
+});
 
 app.on('window-all-closed', () => {
-  // 在 macOS 上，除非用户用 Cmd + Q 确定地退出，否则绝大部分应用及其菜单栏会保持激活
-  // 需要给菜单增加 open 功能
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
+
+app.on('activate', () => win && win.show());
