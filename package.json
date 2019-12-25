@@ -10,6 +10,7 @@
     "fast-glob": "^3.1.1",
     "i": "^0.3.6",
     "npm": "^6.13.4",
+    "pubsub-js": "^1.7.0",
     "react": "^16.12.0",
     "react-codemirror2": "^6.0.0",
     "react-dom": "^16.12.0",

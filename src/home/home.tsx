@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Layout, Tree, Button, Modal, Progress, Icon } from 'antd';
+import { Layout, Tree, Progress } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import action from './action';
-import ProjectSelect from '../component/projectSelect';
+import Operate from '../component/operate';
 import FileIcon from '../component/fileCion';
 import Code from '../component/code';
 import Status from '../component/status';
@@ -30,13 +30,11 @@ const mapDispatchToProps = dispatch => {
 class Home extends React.Component<any, any> {
   static getDerivedStateFromProps(props, state) {
     return {
-      visible: state.visible,
       select: state.select || props.file.entry
     };
   }
 
   state = {
-    visible: false,
     select: null
   };
 
@@ -45,10 +43,6 @@ class Home extends React.Component<any, any> {
     // 加载文件
     initFileAction(project.path);
   }
-
-  deployHandle = () => {
-    this.setState({ visible: true });
-  };
 
   /**
    * 选择文件更新 ide
@@ -89,7 +83,7 @@ class Home extends React.Component<any, any> {
 
   render() {
     const { project, file } = this.props;
-    const { visible, select } = this.state;
+    const { select } = this.state;
     const fileList = file.list;
     const keys = fileList && fileList.map(data => data.key);
     const skeys = select ? [select.key] : ['0'];
@@ -102,13 +96,7 @@ class Home extends React.Component<any, any> {
         <Layout>
           <Sider width='300'>
             <div className='mf-info'>
-              <ProjectSelect path={project.path} changeRouter={this.changRouter} />
-              <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
-                部署
-              </Button>
-              <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
-                构建
-              </Button>
+              <Operate path={project.path} changeRouter={this.changRouter} />
             </div>
             <div className='mf-filelist'>
               {fileList ? (
@@ -130,13 +118,6 @@ class Home extends React.Component<any, any> {
         <Footer className='mf-footer'>
           <Status project={project} file={select} />
         </Footer>
-        <Modal
-          title='项目部署中...'
-          visible={visible}
-          onOk={() => this.setState({ visible: false })}
-          onCancel={() => this.setState({ visible: false })}>
-          <Progress type='circle' percent={75} />
-        </Modal>
       </Layout>
     );
   }

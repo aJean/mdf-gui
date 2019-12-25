@@ -65,7 +65,6 @@ class Launch extends React.Component<any, any> {
           <title>mf-gui</title>
         </Helmet>
         <Header className='mf-launch-header'>
-          <img src='/assets/logos/launch-logo.png' />
           MF-PLUGIN-TOOLS
         </Header>
         <Layout className='mf-launch-layout'>
