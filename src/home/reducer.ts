@@ -7,7 +7,7 @@ import File from '../util/file';
  */
 
 const types = action.types;
-const pstate = (window['project'] = File.readConfig());
+const pstate = File.readConfig();
 const fstate = File.findFiles(pstate? pstate.path: null);
 
 /**

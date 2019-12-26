@@ -12,8 +12,8 @@ let win, tray;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 600,
-    height: 600,
+    width: 1600,
+    height: 1000,
     backgroundColor: '#f0f2f5',
     webPreferences: {
       nodeIntegration: true

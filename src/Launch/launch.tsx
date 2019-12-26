@@ -5,14 +5,12 @@ import { Helmet } from 'react-helmet';
 import action from '../home/action';
 import { Layout, Form, Modal, Input, Button } from 'antd';
 import File from '../util/file';
-import Util from '../util/util';
 import './launch.less';
 
 /**
  * @file 启动屏
  */
 
-const { confirm, error } = Modal;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -25,17 +23,13 @@ const formItemLayout = {
 };
 
 class Launch extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    const win = Util.getLocalWin();
-    console.log(win)
-    win && win.setSize(600, 600);
+  hide() {
+    document.querySelector('.mf-launch-modal').parentElement['style'].display = 'none';
   }
 
   submitHandle = e => {
     e.preventDefault();
-    const { form, initProjectAction, initFileAction, history } = this.props;
+    const { form, initProjectAction, initFileAction } = this.props;
 
     form.validateFields((err, project) => {
       if (err) {
@@ -45,17 +39,10 @@ class Launch extends React.Component<any, any> {
       const data = File.writeConfig(JSON.stringify(project))
       if (data.code != -1) {
         initProjectAction(project);
-        initFileAction(project.path)
-
-        confirm({
-          title: '将要进入工作台',
-          content: '可以在工作台管理项目资源以及编辑代码',
-          onOk() {
-            history.replace('/app');
-          }
-        });
+        initFileAction(project.path);
+        this.hide();
       } else {
-        error({
+        Modal.error({
           title: '写入 local 数据失败',
           content: data.msg,
         });

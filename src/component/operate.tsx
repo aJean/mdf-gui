@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { message, Button } from 'antd';
+import { message, Button, Modal } from 'antd';
+import Launch from '../Launch/launch';
 import './operate.less';
 
 /**
@@ -7,9 +8,12 @@ import './operate.less';
  */
 
 export default class Operate extends React.Component<any, any> {
-  clickHandle = () => {
-    const { changeRouter } = this.props;
-    changeRouter && changeRouter('/');
+  state = {
+    visible: false
+  }
+
+  launchHandle = () => {
+    this.setState({ visible: true })
   };
 
   deployHandle = () => {
@@ -25,7 +29,7 @@ export default class Operate extends React.Component<any, any> {
             项目路径: <em>{path}</em>
           </label>
         ) : null}
-        <Button type='primary' icon='file' size='small' onClick={this.clickHandle}>
+        <Button type='primary' icon='file' size='small' onClick={this.launchHandle}>
           切换
         </Button>
         <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
@@ -34,6 +38,14 @@ export default class Operate extends React.Component<any, any> {
         <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
           构建
         </Button>
+        <Modal
+          closable={false}
+          style={{ top: 0 }}
+          bodyStyle={{ padding: 0 }}
+          visible={this.state.visible}
+          footer={null}>
+          <Launch />
+        </Modal>
       </div>
     );
   }

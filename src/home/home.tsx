@@ -39,8 +39,6 @@ class Home extends React.Component<any, any> {
     select: null
   };
 
-  componentDidMount() {}
-
   /**
    * 选择文件更新 ide
    */
@@ -51,13 +49,6 @@ class Home extends React.Component<any, any> {
     if (key) {
       this.setState({ select: file.map[key] });
     }
-  };
-
-  /**
-   * 窗口切换
-   */
-  changRouter = path => {
-    this.props.history.replace(path);
   };
 
   /**
@@ -93,7 +84,7 @@ class Home extends React.Component<any, any> {
         <Layout>
           <Sider width='300'>
             <div className='mf-info'>
-              <Operate path={project.path} changeRouter={this.changRouter} />
+              <Operate path={project.path} />
             </div>
             <div className='mf-filelist'>
               {fileList ? (
