@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import FileTools from '../util/file';
+import File from '../util/file';
 
 /**
  * @file home action
@@ -15,6 +15,6 @@ export default {
   },
   initProject: createAction(Project_Init),
   initFile: createAction(File_Int, function(path: string) {
-    return FileTools.findProjectFiles(path);
+    return File.findFiles(path);
   })
 };

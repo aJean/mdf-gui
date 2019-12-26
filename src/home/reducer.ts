@@ -7,8 +7,8 @@ import File from '../util/file';
  */
 
 const types = action.types;
-const projectState = (window['project'] = File.readConfig());
-const fileState = { list: [], newList: null, entryFile: null };
+const pstate = (window['project'] = File.readConfig());
+const fstate = File.findFiles(pstate? pstate.path: null);
 
 /**
  * 项目信息 reducer
@@ -19,7 +19,7 @@ export const projectReducer = handleActions(
       return action.payload || state;
     }
   },
-  projectState
+  pstate
 );
 
 /**
@@ -28,19 +28,8 @@ export const projectReducer = handleActions(
 export const fileReducer = handleActions(
   {
     [types.File_Int]: function(state, action: any) {
-      const payload = action.payload;
-      let list = null;
-      let map = null;
-      let entry = null;
-
-      if (payload.tree) {
-        list = [payload.tree];
-        map = payload.map;
-        entry = payload.entry;
-      }
-
-      return { ...state, list, entry, map };
+      return action.payload || null;
     }
   },
-  fileState
+  fstate
 );

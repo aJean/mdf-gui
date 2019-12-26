@@ -8,7 +8,15 @@ import write = require('write');
  * @file 文件工具
  */
 
-function findProjectFiles(path?: string) {
+function writeFile(path: string, code: string) {
+  try {
+    return write.sync(path, code, { newline: true, overwrite: true });
+  } catch (e) {
+    return { code: -1, msg: e.message };
+  }
+}
+
+function findFiles(path?: string) {
   let id = 1;
   let entry = null;
 
@@ -29,7 +37,7 @@ function findProjectFiles(path?: string) {
   };
 
   const tree = dirTree(path + '/src', null, formatNode, formatNode);
-  return { tree, map, entry };
+  return { list: tree && [tree], map, entry };
 }
 
 /**
@@ -58,7 +66,8 @@ function writeConfig(content: string) {
 }
 
 export default {
-  findProjectFiles,
+  writeFile,
+  findFiles,
   readConfig,
   writeConfig
 };

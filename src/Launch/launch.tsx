@@ -4,14 +4,14 @@ import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import action from '../home/action';
 import { Layout, Form, Modal, Input, Button } from 'antd';
-import FileTools from '../util/file';
+import File from '../util/file';
+import Util from '../util/util';
 import './launch.less';
 
 /**
  * @file 启动屏
  */
 
-const { Header } = Layout;
 const { confirm, error } = Modal;
 const formItemLayout = {
   labelCol: {
@@ -25,18 +25,28 @@ const formItemLayout = {
 };
 
 class Launch extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+
+    const win = Util.getLocalWin();
+    console.log(win)
+    win && win.setSize(600, 600);
+  }
+
   submitHandle = e => {
     e.preventDefault();
-    const { form, initProjectAction, history } = this.props;
+    const { form, initProjectAction, initFileAction, history } = this.props;
 
     form.validateFields((err, project) => {
       if (err) {
         return;
       }
 
-      const data = FileTools.writeConfig(JSON.stringify(project))
+      const data = File.writeConfig(JSON.stringify(project))
       if (data.code != -1) {
         initProjectAction(project);
+        initFileAction(project.path)
+
         confirm({
           title: '将要进入工作台',
           content: '可以在工作台管理项目资源以及编辑代码',
@@ -62,13 +72,10 @@ class Launch extends React.Component<any, any> {
     return (
       <Layout className='mf-launch'>
         <Helmet>
-          <title>mf-gui</title>
+          <title></title>
         </Helmet>
-        <Header className='mf-launch-header'>
-          MF-PLUGIN-TOOLS
-        </Header>
         <Layout className='mf-launch-layout'>
-          <h2>填写项目信息</h2>
+          <h2><img src="/assets/logos/dock.png" />Init Your Project</h2>
           <Form {...formItemLayout} onSubmit={this.submitHandle} className='mf-form'>
             <Form.Item label='项目路径'>
               {getFieldDecorator('path', {
@@ -89,7 +96,7 @@ class Launch extends React.Component<any, any> {
               })(<Input placeholder='deploy server' />)}
             </Form.Item>
             <div>
-              <Button type='primary' htmlType='submit'>
+              <Button type='primary' className="mf-form-save" htmlType='submit'>
                 save
               </Button>
             </div>
@@ -108,7 +115,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    initProjectAction: bindActionCreators(action.initProject, dispatch)
+    initProjectAction: bindActionCreators(action.initProject, dispatch),
+    initFileAction: bindActionCreators(action.initFile, dispatch)
   };
 };
 

@@ -12,10 +12,9 @@ let win, tray;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 1400,
-    height: 800,
-    icon: `${app.getAppPath()}/assets/logos/mf.ico`,
-    backgroundColor: '#fff',
+    width: 600,
+    height: 600,
+    backgroundColor: '#f0f2f5',
     webPreferences: {
       nodeIntegration: true
     }
@@ -44,12 +43,26 @@ function createTrayMenu() {
  */
 function createDockMenu() {
   const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/logos/dock.png`);
+  let docWin;
 
   const dockTempalte = [
     {
-      label: '还没想好放什么',
+      label: 'Readme',
       click() {
-        console.log('New Window');
+        docWin = new BrowserWindow({
+          width: 800,
+          height: 800,
+          backgroundColor: '#f0f2f5',
+          type: 'textured',
+          webPreferences: {
+            nodeIntegration: true
+          }
+        });
+        docWin.loadURL(`file://${app.getAppPath()}/config/readme.html`);
+
+        docWin.on('closed', e => {
+          docWin = null
+        });
       }
     }
   ];
@@ -87,7 +100,7 @@ function loadDevServer(win, limit = 5) {
  * 加载本地文件 -- prod
  */
 function loadFile(win) {
-  win.loadURL(`file://${__dirname}/dist/index.html`);
+  win.loadURL(`file://${app.getAppPath()}/dist/index.html`);
 }
 
 app.on('ready', function() {

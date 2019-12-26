@@ -46,9 +46,17 @@ function getCodeType(ext) {
   return CodeType[ext];
 }
 
+/**
+ * 获取渲染窗口对象
+ */
+function getLocalWin() {
+  return require('electron').remote.getCurrentWindow();
+}
+
 export default {
   getShare,
   parseFile,
   getFileType,
-  getCodeType
+  getCodeType,
+  getLocalWin
 };

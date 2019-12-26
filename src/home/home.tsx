@@ -1,29 +1,23 @@
 import * as React from 'react';
-import { Layout, Tree, Progress } from 'antd';
+import { Layout, Tree } from 'antd';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
-import action from './action';
 import Operate from '../component/operate';
 import FileIcon from '../component/fileCion';
 import Code from '../component/code';
 import Status from '../component/status';
+import Util from '../util/util';
 import './home.less';
 
 /**
  * @file 控制台主窗口
  */
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout;
 const mapStateToProps = state => {
   return {
     project: state.project,
     file: state.file
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    initFileAction: bindActionCreators(action.initFile, dispatch)
   };
 };
 
@@ -34,15 +28,18 @@ class Home extends React.Component<any, any> {
     };
   }
 
+  constructor(props) {
+    super(props);
+
+    const win = Util.getLocalWin();
+    win && win.setSize(1600, 1000);
+  }
+
   state = {
     select: null
   };
 
-  componentDidMount() {
-    const { project, initFileAction } = this.props;
-    // 加载文件
-    initFileAction(project.path);
-  }
+  componentDidMount() {}
 
   /**
    * 选择文件更新 ide
@@ -123,4 +120,4 @@ class Home extends React.Component<any, any> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);
