@@ -6,6 +6,7 @@ import Operate from '../component/operate';
 import FileIcon from '../component/fileCion';
 import Code from '../component/code';
 import Status from '../component/status';
+import MfMenu from '../component/menu';
 import Util from '../util/util';
 import './home.less';
 
@@ -17,7 +18,7 @@ const { Footer, Sider, Content } = Layout;
 const mapStateToProps = state => {
   return {
     project: state.project,
-    file: state.file 
+    file: state.file
   };
 };
 
@@ -56,10 +57,6 @@ class Home extends React.Component<any, any> {
     }
   };
 
-  menuHandle = () => {
-    alert(1)
-  }
-
   /**
    * 渲染资源管理树
    */
@@ -95,18 +92,20 @@ class Home extends React.Component<any, any> {
             <div className='mf-info'>
               <Operate path={project.path} />
             </div>
-            <div className='mf-filelist' onContextMenu={this.menuHandle}>
-              {fileList ? (
-                <Tree
-                  key={Date.now()}
-                  defaultSelectedKeys={skeys}
-                  defaultExpandedKeys={keys}
-                  showIcon={true}
-                  onSelect={this.changeFileHandle}>
-                  {this.renderFileTree(fileList)}
-                </Tree>
-              ) : null}
-            </div>
+            <MfMenu>
+              <div className='mf-filelist'>
+                {fileList ? (
+                  <Tree
+                    key={Date.now()}
+                    defaultSelectedKeys={skeys}
+                    defaultExpandedKeys={keys}
+                    showIcon={true}
+                    onSelect={this.changeFileHandle}>
+                    {this.renderFileTree(fileList)}
+                  </Tree>
+                ) : null}
+              </div>
+            </MfMenu>
           </Sider>
           <Content>
             <Code file={select} />

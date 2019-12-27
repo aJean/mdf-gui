@@ -86,7 +86,7 @@ export default class Code extends React.PureComponent<any, any> {
     }
 
     this.len = code.length;
-console.log('@@@@@@@@@', mode)
+
     return (
       <div className='mf-code' onKeyDown={this.keyHandle}>
         {code ? (
