@@ -17,14 +17,18 @@ const { Footer, Sider, Content } = Layout;
 const mapStateToProps = state => {
   return {
     project: state.project,
-    file: state.file
+    file: state.file 
   };
 };
 
 class Home extends React.Component<any, any> {
   static getDerivedStateFromProps(props, state) {
+    // props 引发更新，这里的 state 是 prevState
+    const last = state.file;
+    const next = props.file;
+
     return {
-      select: state.select || props.file.entry
+      select: last != next ? next.entry : state.select
     };
   }
 
@@ -36,7 +40,8 @@ class Home extends React.Component<any, any> {
   }
 
   state = {
-    select: null
+    select: null,
+    file: null
   };
 
   /**
@@ -50,6 +55,10 @@ class Home extends React.Component<any, any> {
       this.setState({ select: file.map[key] });
     }
   };
+
+  menuHandle = () => {
+    alert(1)
+  }
 
   /**
    * 渲染资源管理树
@@ -86,7 +95,7 @@ class Home extends React.Component<any, any> {
             <div className='mf-info'>
               <Operate path={project.path} />
             </div>
-            <div className='mf-filelist'>
+            <div className='mf-filelist' onContextMenu={this.menuHandle}>
               {fileList ? (
                 <Tree
                   key={Date.now()}

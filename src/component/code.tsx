@@ -27,7 +27,7 @@ export default class Code extends React.PureComponent<any, any> {
     if (e.metaKey && e.keyCode == 83) {
       this.saveCode();
     }
-  }
+  };
 
   /**
    * 通知 status bar 改变 ui 状态
@@ -77,8 +77,8 @@ export default class Code extends React.PureComponent<any, any> {
 
   render() {
     const { file } = this.props;
-    let code = 'null';
-    let mode = 'javascript';
+    let code = '';
+    let mode = '';
 
     if (file) {
       code = fs.readFileSync(file.path).toString();
@@ -86,18 +86,20 @@ export default class Code extends React.PureComponent<any, any> {
     }
 
     this.len = code.length;
-
+console.log('@@@@@@@@@', mode)
     return (
       <div className='mf-code' onKeyDown={this.keyHandle}>
-        <CodeMirror
-          value={code}
-          options={{
-            mode: mode,
-            theme: 'material',
-            lineNumbers: true
-          }}
-          onChange={this.updateHandle}
-        />
+        {code ? (
+          <CodeMirror
+            value={code}
+            options={{
+              mode: mode,
+              theme: 'material',
+              lineNumbers: true
+            }}
+            onChange={this.updateHandle}
+          />
+        ) : null}
       </div>
     );
   }

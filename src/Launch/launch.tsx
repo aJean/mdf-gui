@@ -2,8 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
-import action from '../home/action';
 import { Layout, Form, Modal, Input, Button } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+import action from '../home/action';
 import File from '../util/file';
 import './launch.less';
 
@@ -11,7 +12,18 @@ import './launch.less';
  * @file 启动屏
  */
 
-const formItemLayout = {
+type OwnProps = {
+  onHide: Function;
+};
+
+type LaunchProps = {
+  onHide: Function;
+  initProjectAction?: Function;
+  initFileAction?: Function;
+  project?: any;
+};
+
+const itemLayout = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 6 }
@@ -22,10 +34,10 @@ const formItemLayout = {
   }
 };
 
-class Launch extends React.Component<any, any> {
-  hide() {
-    document.querySelector('.mf-launch-modal').parentElement['style'].display = 'none';
-  }
+class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
+  hideLaunch = () => {
+    this.props.onHide();
+  };
 
   submitHandle = e => {
     e.preventDefault();
@@ -36,15 +48,15 @@ class Launch extends React.Component<any, any> {
         return;
       }
 
-      const data = File.writeConfig(JSON.stringify(project))
+      const data = File.writeConfig(JSON.stringify(project));
       if (data.code != -1) {
         initProjectAction(project);
         initFileAction(project.path);
-        this.hide();
+        this.hideLaunch();
       } else {
         Modal.error({
           title: '写入 local 数据失败',
-          content: data.msg,
+          content: data.msg
         });
       }
     });
@@ -62,8 +74,11 @@ class Launch extends React.Component<any, any> {
           <title></title>
         </Helmet>
         <Layout className='mf-launch-layout'>
-          <h2><img src="/assets/logos/dock.png" />Init Your Project</h2>
-          <Form {...formItemLayout} onSubmit={this.submitHandle} className='mf-form'>
+          <h2>
+            <img src='/assets/logos/dock.png' />
+            Init Your Project
+          </h2>
+          <Form {...itemLayout} onSubmit={this.submitHandle} className='mf-form'>
             <Form.Item label='项目路径'>
               {getFieldDecorator('path', {
                 rules: [{ required: true, message: 'Please input project path' }],
@@ -83,7 +98,10 @@ class Launch extends React.Component<any, any> {
               })(<Input placeholder='deploy server' />)}
             </Form.Item>
             <div>
-              <Button type='primary' className="mf-form-save" htmlType='submit'>
+              <Button type='primary' className='mf-form-cancel' onClick={this.hideLaunch}>
+                cancel
+              </Button>
+              <Button type='primary' className='mf-form-save' htmlType='submit'>
                 save
               </Button>
             </div>
@@ -95,9 +113,10 @@ class Launch extends React.Component<any, any> {
 }
 
 const FormLaunch = Form.create()(Launch);
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps: OwnProps) => {
   return {
-    project: state.project
+    project: state.project,
+    onHide: ownProps.onHide
   };
 };
 const mapDispatchToProps = dispatch => {

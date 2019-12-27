@@ -10,10 +10,14 @@ import './operate.less';
 export default class Operate extends React.Component<any, any> {
   state = {
     visible: false
-  }
+  };
 
-  launchHandle = () => {
-    this.setState({ visible: true })
+  showLaunch = () => {
+    this.setState({ visible: true });
+  };
+
+  hideLaunch = () => {
+    this.setState({ visible: false });
   };
 
   deployHandle = () => {
@@ -29,7 +33,7 @@ export default class Operate extends React.Component<any, any> {
             项目路径: <em>{path}</em>
           </label>
         ) : null}
-        <Button type='primary' icon='file' size='small' onClick={this.launchHandle}>
+        <Button type='primary' icon='file' size='small' onClick={this.showLaunch}>
           切换
         </Button>
         <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
@@ -44,7 +48,7 @@ export default class Operate extends React.Component<any, any> {
           bodyStyle={{ padding: 0 }}
           visible={this.state.visible}
           footer={null}>
-          <Launch />
+          <Launch onHide={this.hideLaunch} />
         </Modal>
       </div>
     );
