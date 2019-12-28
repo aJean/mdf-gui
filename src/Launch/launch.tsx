@@ -41,26 +41,44 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
 
   submitHandle = e => {
     e.preventDefault();
-    const { form, initProjectAction, initFileAction } = this.props;
+    const { form } = this.props;
 
     form.validateFields((err, project) => {
       if (err) {
         return;
       }
-
-      const data = File.writeConfig(JSON.stringify(project));
-      if (data.code != -1) {
-        initProjectAction(project);
-        initFileAction(project.path);
-        this.hideLaunch();
-      } else {
-        Modal.error({
-          title: '写入 local 数据失败',
-          content: data.msg
+      
+      if (!File.exist(project.path)) {
+        return Modal.confirm({
+          title: '项目不存在是否在该路径上新建?',
+          onOk: () => {
+            this.save(project);
+          }
         });
       }
+
+      this.save(project);
     });
   };
+
+  /**
+   * 根据 project 信息初始化文件系统
+   */
+  save(data: any) {
+    const { initProjectAction, initFileAction } = this.props;
+
+    const res = File.writeConfig(JSON.stringify(data));
+    if (res.code != -1) {
+      initProjectAction(data);
+      initFileAction(data.path);
+      this.hideLaunch();
+    } else {
+      Modal.error({
+        title: '写入 local 数据失败',
+        content: res.msg
+      });
+    }
+  }
 
   render() {
     const {

@@ -64,14 +64,16 @@ class Home extends React.Component<any, any> {
     const { TreeNode } = Tree;
 
     return list.map(item => {
+      const customTitle = <span data-path={item.path}>{item.title}</span>;
+
       if (item.children) {
         return (
-          <TreeNode icon={<FileIcon file={item} />} title={item.title} key={item.key}>
+          <TreeNode icon={<FileIcon file={item} />} title={customTitle} key={item.key}>
             {this.renderFileTree(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode icon={<FileIcon file={item} />} key={item.key} title={item.title} />;
+      return <TreeNode icon={<FileIcon file={item} />} key={item.key} title={customTitle} />;
     });
   }
 

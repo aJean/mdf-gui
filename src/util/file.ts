@@ -69,5 +69,13 @@ export default {
   writeFile,
   findFiles,
   readConfig,
-  writeConfig
+  writeConfig,
+  exist(path) {
+    try {
+      fs.accessSync(path);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 };
