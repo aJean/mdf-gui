@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { message, Button, Modal } from 'antd';
-import Launch from '../Launch/launch';
+import Launch from '../launch/launch';
 import './operate.less';
 
 /**
