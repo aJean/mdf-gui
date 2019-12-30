@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Helmet } from 'react-helmet';
 import { Layout, Form, Modal, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import action from '../home/action';
@@ -35,6 +34,13 @@ const itemLayout = {
 };
 
 class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
+  /**
+   * 设置 document title
+   */
+  setTitle(path: string) {
+    document.title = path;
+  }
+
   hideLaunch = () => {
     this.props.onHide();
   };
@@ -47,14 +53,9 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
       if (err) {
         return;
       }
-      
+
       if (!File.exist(project.path)) {
-        return Modal.confirm({
-          title: '项目不存在是否在该路径上新建?',
-          onOk: () => {
-            this.save(project);
-          }
-        });
+        return Modal.error({ title: '不是有效的项目路径' });
       }
 
       this.save(project);
@@ -67,10 +68,13 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
   save(data: any) {
     const { initProjectAction, initFileAction } = this.props;
 
-    const res = File.writeConfig(JSON.stringify(data));
+    const res = File.writeConfig(data);
+    const path = data.path;
+
     if (res.code != -1) {
       initProjectAction(data);
-      initFileAction(data.path);
+      initFileAction(path);
+      this.setTitle(path);
       this.hideLaunch();
     } else {
       Modal.error({
@@ -86,11 +90,9 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
       project
     } = this.props;
 
+    project && this.setTitle(project.path);
     return (
       <Layout className='mf-launch'>
-        <Helmet>
-          <title></title>
-        </Helmet>
         <Layout className='mf-launch-layout'>
           <h2>
             <img src='/assets/logos/dock.png' />

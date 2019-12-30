@@ -21,7 +21,8 @@ const CodeType = {
   '.jsx': 'javascript',
   '.tsx': 'javascript',
   '.css': 'text/css',
-  '.less': 'text/x-less'
+  '.less': 'text/x-less',
+  '.html': 'text/html'
 };
 
 function parseFile(file: string) {

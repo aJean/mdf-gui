@@ -16,6 +16,15 @@ import './code.less';
 
 const PubSub = require('pubsub-js');
 export default class Code extends React.PureComponent<any, any> {
+  static getDerivedStateFromProps(props, state) {
+    return {
+      file: state.file || props.file
+    };
+  }
+
+  state = {
+    file: null
+  };
   // code to save
   value: string;
   // load code length
@@ -56,7 +65,7 @@ export default class Code extends React.PureComponent<any, any> {
    * 保存代码到本地
    */
   saveCode() {
-    const { file } = this.props;
+    const { file } = this.state;
     const code = this.value;
 
     if (!file) {
@@ -71,12 +80,21 @@ export default class Code extends React.PureComponent<any, any> {
     if (res.code == -1) {
       return message.error(res.msg);
     } else {
+      // 保存成功，更新 len
+      this.len = code.length;
       this.notify('code-save');
     }
   }
 
+  /**
+   * 外部传入 file
+   */
+  acceptFile(file) {
+    this.setState({ file });
+  }
+
   render() {
-    const { file } = this.props;
+    const { file } = this.state;
     let code = '';
     let mode = '';
 

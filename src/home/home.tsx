@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Layout, Tree } from 'antd';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import Operate from '../component/operate';
 import FileIcon from '../component/fileCion';
 import Code from '../component/code';
 import Status from '../component/status';
 import MfMenu from '../component/menu';
 import Util from '../util/util';
+import File from '../util/file';
 import './home.less';
 
 /**
@@ -29,7 +29,9 @@ class Home extends React.Component<any, any> {
     const next = props.file;
 
     return {
-      select: last != next ? next.entry : state.select
+      file: props.file,
+      select: last != next ? next.entry : state.select,
+      expandKeys: state.expandKeys
     };
   }
 
@@ -42,25 +44,38 @@ class Home extends React.Component<any, any> {
 
   state = {
     select: null,
-    file: null
+    file: null,
+    expandKeys: ['root']
   };
 
   /**
    * 选择文件更新 ide
    */
   changeFileHandle = keys => {
-    const { file } = this.props;
-    const key = keys[0];
+    const { project, file } = this.props;
+    const select = file.map[keys[0]];
+    const code: any = this.refs.code;
+    const status: any = this.refs.status;
 
-    if (key) {
-      this.setState({ select: file.map[key] });
+    if (select && select.type == 'file') {
+      // 将选中文件写入配置
+      File.writeConfig({ ...project, entry: select.path });
+      code.acceptFile(select);
+      status.acceptFile(select);
     }
+  };
+
+  /**
+   * 记录展开的 keys
+   */
+  setExpandHandle = keys => {
+    this.state.expandKeys = keys;
   };
 
   /**
    * 渲染资源管理树
    */
-  renderFileTree(list) {
+  generateTree(list) {
     const { TreeNode } = Tree;
 
     return list.map(item => {
@@ -69,7 +84,7 @@ class Home extends React.Component<any, any> {
       if (item.children) {
         return (
           <TreeNode icon={<FileIcon file={item} />} title={customTitle} key={item.key}>
-            {this.renderFileTree(item.children)}
+            {this.generateTree(item.children)}
           </TreeNode>
         );
       }
@@ -79,42 +94,39 @@ class Home extends React.Component<any, any> {
 
   render() {
     const { project, file } = this.props;
-    const { select } = this.state;
+    const { select, expandKeys } = this.state;
     const fileList = file.list;
-    const keys = fileList && fileList.map(data => data.key);
-    const skeys = select ? [select.key] : ['0'];
+    const keys = expandKeys;
 
     return (
       <Layout className='mf-home'>
-        <Helmet>
-          <title>project - {project.path}</title>
-        </Helmet>
         <Layout>
           <Sider width='300'>
             <div className='mf-info'>
-              <Operate path={project.path} />
+              <Operate project={project} />
             </div>
             <MfMenu>
               <div className='mf-filelist'>
                 {fileList ? (
                   <Tree
                     key={Date.now()}
-                    defaultSelectedKeys={skeys}
                     defaultExpandedKeys={keys}
+                    defaultSelectedKeys={[select && select.key]}
                     showIcon={true}
-                    onSelect={this.changeFileHandle}>
-                    {this.renderFileTree(fileList)}
+                    onSelect={this.changeFileHandle}
+                    onExpand={this.setExpandHandle}>
+                    {this.generateTree(fileList)}
                   </Tree>
                 ) : null}
               </div>
             </MfMenu>
           </Sider>
           <Content>
-            <Code file={select} />
+            <Code ref='code' file={select} />
           </Content>
         </Layout>
         <Footer className='mf-footer'>
-          <Status project={project} file={select} />
+          <Status ref="status" project={project} file={select} />
         </Footer>
       </Layout>
     );

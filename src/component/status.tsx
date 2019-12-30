@@ -8,8 +8,15 @@ import './status.less';
 
 const PubSub = require('pubsub-js');
 export default class Status extends React.PureComponent<any, any> {
+  static getDerivedStateFromProps(props, state) {
+    return {
+      file: state.file || props.file
+    };
+  }
+
   state = {
-    codeStatus: 'normal'
+    codeStatus: 'normal',
+    file: null
   };
 
   componentDidMount() {
@@ -28,9 +35,13 @@ export default class Status extends React.PureComponent<any, any> {
     PubSub.clearAllSubscriptions();
   }
 
+  acceptFile(file) {
+    this.setState({ file });
+  }
+
   render() {
-    const { project, file } = this.props;
-    const { codeStatus } = this.state;
+    const { project } = this.props;
+    const { codeStatus, file } = this.state;
 
     let type = '--';
     let path = '--';
@@ -44,7 +55,7 @@ export default class Status extends React.PureComponent<any, any> {
       <div className='mf-status'>
         <div className='mf-status-file'>
           <img src='/assets/logos/status-logo.svg' />
-          <em>{project.name}</em>
+          <em>{project ? project.name : '--'}</em>
           <span>{path}</span>
           {codeStatus == 'edit' ? <span className='mf-status-todo'></span> : null}
         </div>

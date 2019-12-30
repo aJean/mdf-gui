@@ -25,12 +25,14 @@ export default class Operate extends React.Component<any, any> {
   };
 
   render() {
-    const { path, showLabel } = this.props;
+    const { project, showLabel } = this.props;
+    const { visible } = this.state;
+
     return (
       <div className='mf-select'>
         {showLabel ? (
           <label>
-            项目路径: <em>{path}</em>
+            项目路径: <em>{project.path}</em>
           </label>
         ) : null}
         <Button type='primary' icon='file' size='small' onClick={this.showLaunch}>
@@ -46,7 +48,7 @@ export default class Operate extends React.Component<any, any> {
           closable={false}
           style={{ top: 0 }}
           bodyStyle={{ padding: 0 }}
-          visible={this.state.visible}
+          visible={visible}
           footer={null}>
           <Launch onHide={this.hideLaunch} />
         </Modal>

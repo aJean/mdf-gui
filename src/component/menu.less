@@ -3,8 +3,8 @@
   .react-contextmenu {
     min-width: 160px;
     padding: 5px 0;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
     margin: 2px 0 0;
     font-size: 12px;
     text-align: left;
@@ -46,28 +46,28 @@
   .react-contextmenu-item.react-contextmenu-item--disabled,
   .react-contextmenu-item.react-contextmenu-item--disabled:hover {
     background-color: transparent;
-    border-color: rgba(0, 0, 0, .15);
+    border-color: rgba(0, 0, 0, 0.15);
     color: #878a8c;
   }
 
   .react-contextmenu-item--divider {
     padding: 2px 0;
     margin-bottom: 3px;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     cursor: inherit;
   }
 
   .react-contextmenu-item--divider:hover {
     background-color: transparent;
-    border-color: rgba(0, 0, 0, .15);
+    border-color: rgba(0, 0, 0, 0.15);
   }
 
   .react-contextmenu-item.react-contextmenu-submenu {
     padding: 0;
   }
 
-  .react-contextmenu-item.react-contextmenu-submenu>.react-contextmenu-item:after {
-    content: "▶";
+  .react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after {
+    content: '▶';
     display: inline-block;
     position: absolute;
     right: 7px;
@@ -76,5 +76,21 @@
   .example-multiple-targets::after {
     content: attr(data-count);
     display: block;
+  }
+}
+
+.mf-filemodal {
+  width: 200px !important;
+  margin: 0 !important;
+  .ant-modal-body {
+    padding: 10px;
+  }
+  .ant-modal-footer {
+    padding: 10px;
+  }
+  .ant-btn {
+    font-size: 12px;
+    line-height: 28px;
+    height: 28px;
   }
 }

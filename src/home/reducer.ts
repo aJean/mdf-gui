@@ -8,7 +8,7 @@ import File from '../util/file';
 
 const types = action.types;
 const pstate = File.readConfig();
-const fstate = File.findFiles(pstate? pstate.path: null);
+const fstate = File.findFiles(pstate && pstate.path);
 
 /**
  * 项目信息 reducer

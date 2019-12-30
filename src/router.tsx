@@ -14,7 +14,7 @@ export default function() {
     <Provider store={store}>
       <MemoryRouter>
         <Route exact path='/' component={Home} />
-        <Redirect to="/" />
+        {/* <Redirect to="/" /> */}
       </MemoryRouter>
     </Provider>
   );
