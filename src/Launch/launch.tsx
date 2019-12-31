@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Layout, Form, Modal, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import action from '../home/action';
+import action from '../data/action';
 import File from '../util/file';
 import './launch.less';
 

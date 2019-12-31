@@ -23,7 +23,9 @@ export default {
    * @param {string} path 项目路径
    */
   findFiles(path?: string) {
-    if (!path) {
+    try {
+      fs.accessSync(path);
+    } catch(e) {
       return {};
     }
 

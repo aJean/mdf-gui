@@ -4,7 +4,7 @@ import { Modal, Input } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import action from '../home/action';
+import action from '../data/action';
 import File from '../util/file';
 import './menu.less';
 
@@ -146,7 +146,7 @@ class MfMenu extends React.Component<any, any> {
           onOk={this.doAddHandle}
           onCancel={this.hideModal}
           mask={false}>
-          <Input ref='finput' />
+          <Input ref='finput' autoFocus />
         </Modal>
       </div>
     );

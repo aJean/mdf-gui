@@ -7,26 +7,48 @@ import './operate.less';
  * @file 项目选择组件
  */
 
+const cmd = require('node-cmd');
 export default class Operate extends React.Component<any, any> {
+  static getDerivedStateFromProps(props, state) {
+    return {
+      vlaunch: props.showLaunch || state.vlaunch,
+      vbuild: state.vbuild
+    };
+  }
+
   state = {
-    visible: false
+    vlaunch: false,
+    vbuild: true
   };
 
   showLaunch = () => {
-    this.setState({ visible: true });
+    this.setState({ vlaunch: true });
   };
 
   hideLaunch = () => {
-    this.setState({ visible: false });
+    this.setState({ vlaunch: false });
   };
 
   deployHandle = () => {
-    message.warning('todo...');
+    Modal.warn({ title: 'todo' });
+  };
+
+  test = () => {
+    const iterm: any = this.refs.iterm;
+    console.log(iterm);
+
+    cmd.get('ls', function(err, data, stderr) {
+      iterm.innerHTML = data;
+    });
+  };
+
+  closeBuildHandle = () => {
+    this.setState({ vbuild: false });
   };
 
   render() {
     const { project, showLabel } = this.props;
-    const { visible } = this.state;
+    const { vlaunch, vbuild } = this.state;
 
     return (
       <div className='mf-select'>
@@ -44,13 +66,20 @@ export default class Operate extends React.Component<any, any> {
         <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
           构建
         </Button>
-        <Modal
-          closable={false}
-          style={{ top: 0 }}
-          bodyStyle={{ padding: 0 }}
-          visible={visible}
-          footer={null}>
+        <Modal className='mf-launch-modal' closable={false} visible={vlaunch} footer={null}>
           <Launch onHide={this.hideLaunch} />
+        </Modal>
+        <Modal
+          className='mf-build-modal'
+          visible={vbuild}
+          maskClosable={false}
+          footer={null}
+          title='传输中...'
+          onCancel={this.closeBuildHandle}>
+          <div>
+            <button onClick={this.test}>click me</button>
+            <pre ref='iterm'></pre>
+          </div>
         </Modal>
       </div>
     );

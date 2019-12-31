@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { Route, MemoryRouter, Redirect } from 'react-router';
-import store from './home/store';
-import Home from './home/home';
+import store from './data/store';
+import WebIDE from './ide/ide';
 import 'antd/dist/antd.less';
 
 /**
@@ -13,7 +13,7 @@ export default function() {
   return (
     <Provider store={store}>
       <MemoryRouter>
-        <Route exact path='/' component={Home} />
+        <Route exact path='/' component={WebIDE} />
         {/* <Redirect to="/" /> */}
       </MemoryRouter>
     </Provider>

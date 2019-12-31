@@ -8,7 +8,7 @@ import Status from '../component/status';
 import MfMenu from '../component/menu';
 import Util from '../util/util';
 import File from '../util/file';
-import './home.less';
+import './ide.less';
 
 /**
  * @file 控制台主窗口
@@ -83,7 +83,7 @@ class Home extends React.Component<any, any> {
 
       if (item.children) {
         return (
-          <TreeNode icon={<FileIcon file={item} />} title={customTitle} key={item.key}>
+          <TreeNode icon={<FileIcon file={item} />} title={customTitle} key={item.key} selectable={false}>
             {this.generateTree(item.children)}
           </TreeNode>
         );
@@ -103,7 +103,7 @@ class Home extends React.Component<any, any> {
         <Layout>
           <Sider width='300'>
             <div className='mf-info'>
-              <Operate project={project} />
+              <Operate project={project} showLaunch={!fileList}/>
             </div>
             <MfMenu>
               <div className='mf-filelist'>
