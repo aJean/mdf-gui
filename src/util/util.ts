@@ -2,17 +2,13 @@
  * @file util tools
  */
 
-function getShare(key: string) {
-  return require('electron').remote.getGlobal(key);
-}
-
 const FileType = {
-  'js': 'JavaScript',
-  'ts': 'TypeScript',
-  'jsx': 'JavaScript React',
-  'tsx': 'TypeScript React',
-  'css': 'Css',
-  'less': 'Less'
+  js: 'JavaScript',
+  ts: 'TypeScript',
+  jsx: 'JavaScript React',
+  tsx: 'TypeScript React',
+  css: 'Css',
+  less: 'Less'
 };
 
 const CodeType = {
@@ -25,39 +21,40 @@ const CodeType = {
   '.html': 'text/html'
 };
 
-function parseFile(file: string) {
-  let tokens = file.split('/');
-  const name = tokens.pop();
-  tokens = name.split('.');
-  const type = tokens.pop();
-
-  return { name, type: FileType[type] };
-}
-
-function getFileType(path: string) {
-  let tokens = path.split('/');
-  const name = tokens.pop();
-  tokens = name.split('.');
-  const type = tokens.pop();
-
-  return FileType[type];
-}
-
-function getCodeType(ext) {
-  return CodeType[ext];
-}
-
-/**
- * 获取渲染窗口对象
- */
-function getLocalWin() {
-  return require('electron').remote.getCurrentWindow();
-}
-
 export default {
-  getShare,
-  parseFile,
-  getFileType,
-  getCodeType,
-  getLocalWin
+  getShare(key: string) {
+    return require('electron').remote.getGlobal(key);
+  },
+
+  parseFile(file: string) {
+    let tokens = file.split('/');
+    const name = tokens.pop();
+    tokens = name.split('.');
+    const type = tokens.pop();
+
+    return { name, type: FileType[type] };
+  },
+
+  getFileType(path: string) {
+    let tokens = path.split('/');
+    const name = tokens.pop();
+    tokens = name.split('.');
+    const type = tokens.pop();
+
+    return FileType[type];
+  },
+
+  getCodeType(ext: string) {
+    return CodeType[ext];
+  },
+
+  getLocalWin() {
+    return require('electron').remote.getCurrentWindow();
+  },
+
+  insertDom(elem: HTMLElement, content: string) {
+    const div = document.createElement('div');
+    div.innerHTML = content;
+    elem.appendChild(div);
+  }
 };

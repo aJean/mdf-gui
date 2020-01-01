@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { message, Button, Modal } from 'antd';
+import { Button, Modal } from 'antd';
+import axios from 'axios';
 import Launch from '../launch/launch';
+import Util from '../util/util';
 import './operate.less';
 
 /**
@@ -34,12 +36,23 @@ export default class Operate extends React.Component<any, any> {
   };
 
   test = () => {
+    const { project } = this.props;
     const iterm: any = this.refs.iterm;
-    console.log(iterm);
+    const insert = function(content: string) {
+      Util.insertDom(iterm, content);
+    };
 
-    cmd.get('ls', function(err, data, stderr) {
-      iterm.innerHTML = data;
-    });
+    axios
+      .post(project.deploy, { test: 1 })
+      .then(res => {
+        insert('connect to deploy server');
+        cmd.get('ls', function(err, data, stderr) {
+          insert(data);
+        });
+      })
+      .catch(e => {
+        insert(e.message);
+      });
   };
 
   closeBuildHandle = () => {
