@@ -1,6 +1,1 @@
-{
-  "path": "/Users/qiaoyue/Sites/test",
-  "name": "test",
-  "deploy": "http://localhost:8190/_enhance-server",
-  "entry": "/Users/qiaoyue/Sites/test/src/index.ts"
-}
+{"path":"/Users/qiaoyue3/Sites/test","name":"test","deploy":"http://localhost:8190/_enhance-server","entry":"/Users/qiaoyue3/Sites/test/src/package.json"}

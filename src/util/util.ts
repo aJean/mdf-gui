@@ -2,6 +2,8 @@
  * @file util tools
  */
 
+const CMD = require('node-cmd');
+
 const FileType = {
   js: 'JavaScript',
   ts: 'TypeScript',
@@ -16,6 +18,7 @@ const CodeType = {
   '.ts': 'javascript',
   '.jsx': 'javascript',
   '.tsx': 'javascript',
+  '.json': 'javascript',
   '.css': 'text/css',
   '.less': 'text/x-less',
   '.html': 'text/html'
@@ -52,9 +55,12 @@ export default {
     return require('electron').remote.getCurrentWindow();
   },
 
-  insertDom(elem: HTMLElement, content: string) {
-    const div = document.createElement('div');
-    div.innerHTML = content;
-    elem.appendChild(div);
+  /**
+   * 执行 cli 命令
+   */
+  shell(cmd: string) {
+    CMD.get(cmd, function(err, data, stderr) {
+      console.info(data);
+    });
   }
 };
