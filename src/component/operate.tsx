@@ -95,7 +95,7 @@ export default class Operate extends React.Component<any, any> {
       mkdir -p dist temp
       cp -r ${project.path}/src/* ./temp
       npx webpack --config ${temp}
-      rm -rf ./temp
+      rm -rf ./temp ${temp}
       `
     )
       .then((data) => mfconsole.info(data))
