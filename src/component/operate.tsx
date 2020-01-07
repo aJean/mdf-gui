@@ -3,6 +3,8 @@ import { Button, Modal } from 'antd';
 import { Hook, Console } from 'console-feed';
 import axios from 'axios';
 import Launch from '../launch/launch';
+import Util from '../util/util';
+import File from '../util/file';
 import './operate.less';
 
 /**
@@ -33,7 +35,7 @@ export default class Operate extends React.Component<any, any> {
   componentDidMount() {
     mfconsole = Hook(
       Object.assign({}, window.console),
-      log => this.setState({ logs: [...this.state.logs, log] }),
+      (log) => this.setState({ logs: [...this.state.logs, log] }),
       false
     );
   }
@@ -57,14 +59,52 @@ export default class Operate extends React.Component<any, any> {
     this.setState({ vdeploy: false });
   };
 
+  /**
+   * 打开编译窗口
+   */
   buildHandle = () => {
-    Modal.warn({ title: 'todo' });
+    this.setState({ vbuild: true }, () => this.build());
   };
 
   closeBuildHandle = () => {
     this.setState({ vbuild: false });
   };
 
+  /**
+   * 本地编译
+   */
+  build() {
+    const cwd = process.cwd();
+    const { project } = this.props;
+    const data = {
+      name: project.name,
+      context: `${cwd}/temp`,
+      output: `${cwd}/dist`
+    };
+    const temp = `${cwd}/config/temp.config.js`;
+
+    mfconsole.warn('start to build ...');
+    const code = File.readFile(`${cwd}/config/build.tpl`);
+    File.writeFile(
+      temp,
+      code.replace(/<%([^%>]*)%>/g, ($, $1) => data[$1])
+    );
+
+    Util.shell(
+      `
+      mkdir -p dist temp
+      cp -r ${project.path}/src/* ./temp
+      npx webpack --config ${temp}
+      rm -rf ./temp
+      `
+    )
+      .then((data) => mfconsole.info(data))
+      .catch((e) => mfconsole.error(e));
+  }
+
+  /**
+   * 模拟 sleep
+   */
   lazy(time) {
     return new Promise(function(resolve, reject) {
       const tid = setTimeout(function() {
@@ -78,13 +118,16 @@ export default class Operate extends React.Component<any, any> {
     });
   }
 
+  /**
+   * 部署到远程服务器
+   */
   deploy = () => {
     const { project } = this.props;
 
     axios
       .post(project.deploy, { test: 1 })
-      .then(async res => {
-        mfconsole.log('start to deploy ...');
+      .then(async (res) => {
+        mfconsole.warn('start to deploy ...');
         await this.lazy(1000);
         mfconsole.log('deploy server connected ...');
 
@@ -126,14 +169,14 @@ export default class Operate extends React.Component<any, any> {
           this.closeDeployHandle();
         }
       })
-      .catch(e => {
+      .catch((e) => {
         mfconsole.error(e.message);
       });
   };
 
   render() {
     const { project, showLabel } = this.props;
-    const { vlaunch, vdeploy, logs } = this.state;
+    const { vlaunch, vdeploy, vbuild, logs } = this.state;
 
     return (
       <div className='mf-select'>
@@ -142,7 +185,7 @@ export default class Operate extends React.Component<any, any> {
             项目路径: <em>{project.path}</em>
           </label>
         ) : null}
-        <Button type='primary' icon='file' size='small' onClick={this.showLaunch}>
+        <Button type='primary' size='small' icon='file' onClick={this.showLaunch}>
           切换
         </Button>
         <Button type='primary' size='small' icon='play-circle' onClick={this.deployHandle}>
@@ -161,6 +204,17 @@ export default class Operate extends React.Component<any, any> {
           footer={null}
           title={project.deploy}
           onCancel={this.closeDeployHandle}>
+          <div>
+            <Console logs={logs} variant='dark' />
+          </div>
+        </Modal>
+        <Modal
+          className='mf-build-modal'
+          visible={vbuild}
+          maskClosable={false}
+          footer={null}
+          title={process.cwd() + '/dist'}
+          onCancel={this.closeBuildHandle}>
           <div>
             <Console logs={logs} variant='dark' />
           </div>

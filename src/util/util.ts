@@ -59,8 +59,10 @@ export default {
    * 执行 cli 命令
    */
   shell(cmd: string) {
-    CMD.get(cmd, function(err, data, stderr) {
-      console.info(data);
+    return new Promise(function(resolve, reject) {
+      CMD.get(cmd, function(err, data, stderr) {
+        err ? reject(err) : resolve(data);
+      });
     });
   }
 };

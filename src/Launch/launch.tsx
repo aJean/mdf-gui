@@ -6,6 +6,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import action from '../data/action';
 import File from '../util/file';
 import './launch.less';
+import file from '../util/file';
 
 /**
  * @file 启动屏
@@ -45,7 +46,10 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
     this.props.onHide();
   };
 
-  submitHandle = e => {
+  /**
+   * 表单提交
+   */
+  submitHandle = (e) => {
     e.preventDefault();
     const { form } = this.props;
 
@@ -60,6 +64,21 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
 
       this.save(project);
     });
+  };
+
+  /**
+   * 选择项目路径
+   */
+  selectHandle = (e) => {
+    e.preventDefault();
+    const { form } = this.props;
+
+    file.selectPath().then((res) => {
+      if (res.filePaths.length) {
+        form.setFieldsValue({ path: res.filePaths[0] });
+      }
+    });
+    e.target.blur();
   };
 
   /**
@@ -103,7 +122,7 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
               {getFieldDecorator('path', {
                 rules: [{ required: true, message: 'Please input project path' }],
                 initialValue: project && project.path
-              })(<Input size='default' placeholder='project absolute path' />)}
+              })(<Input size='default' placeholder='project absolute path' onClick={this.selectHandle} />)}
             </Form.Item>
             <Form.Item label='项目名称'>
               {getFieldDecorator('name', {
@@ -139,7 +158,7 @@ const mapStateToProps = (state, ownProps: OwnProps) => {
     onHide: ownProps.onHide
   };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     initProjectAction: bindActionCreators(action.initProject, dispatch),
     initFileAction: bindActionCreators(action.initFile, dispatch)

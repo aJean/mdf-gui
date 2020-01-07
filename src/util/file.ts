@@ -10,6 +10,16 @@ import rimraf = require('rimraf');
  */
 
 export default {
+  /**
+   * 读文件
+   */
+  readFile(path) {
+    return fs.readFileSync(path).toString();
+  },
+
+  /**
+   * 写文件
+   */
   writeFile(path: string, code: string) {
     try {
       return write.sync(path, code, { newline: true, overwrite: true });
@@ -25,7 +35,7 @@ export default {
   findFiles(path?: string) {
     try {
       fs.accessSync(path);
-    } catch(e) {
+    } catch (e) {
       return {};
     }
 
@@ -101,7 +111,7 @@ export default {
 
   /**
    * 新建
-   * @param path 
+   * @param path
    * @param type 类别 1 文件 2目录
    */
   mknew(path: string, type = 1) {
@@ -113,6 +123,9 @@ export default {
     }
   },
 
+  /**
+   * 删除
+   */
   rm(path: string) {
     try {
       rimraf.sync(path);
@@ -120,5 +133,13 @@ export default {
     } catch (e) {
       return { code: -1, msg: e.message };
     }
+  },
+
+  /**
+   * 选择系统路径
+   */
+  selectPath() {
+    const dialog = require('electron').remote.dialog;
+    return dialog.showOpenDialog({ properties: ['openDirectory'] });
   }
 };
