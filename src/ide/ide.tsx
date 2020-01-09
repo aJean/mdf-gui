@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Layout, Tree } from 'antd';
 import { connect } from 'react-redux';
 import Operate from '../component/operate';
-import FileIcon from '../component/fileCion';
+import FileIcon from '../component/fileIcon';
 import Code from '../component/code';
 import Status from '../component/status';
 import MfMenu from '../component/menu';

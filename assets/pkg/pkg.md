@@ -6,3 +6,6 @@ pkg 放置编译后的 plugins bundle
 - pkg 提交到 git repo，并且发布线上
 - 更新 config server 的 map
 - 通知平台进行更新
+
+### 定期清理目录
+- 超过 100 清空

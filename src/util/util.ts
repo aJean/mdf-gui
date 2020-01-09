@@ -3,6 +3,7 @@
  */
 
 const CMD = require('node-cmd');
+const remote = require('electron').remote;
 
 const FileType = {
   js: 'JavaScript',
@@ -26,7 +27,7 @@ const CodeType = {
 
 export default {
   getShare(key: string) {
-    return require('electron').remote.getGlobal(key);
+    return remote.getGlobal(key);
   },
 
   parseFile(file: string) {
@@ -64,5 +65,14 @@ export default {
         err ? reject(err) : resolve(data);
       });
     });
+  },
+
+  /**
+   * 所有外链图片都要用这个方法转化
+   */
+  getFilePath(url) {
+    const info = remote.getGlobal('info');
+    const protocol = process.env.NODE_ENV === 'production' ? `file://${info.appPath}` : ``;
+    return `${protocol}${url}`;
   }
 };

@@ -5,8 +5,8 @@ import { Layout, Form, Modal, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import action from '../data/action';
 import File from '../util/file';
+import Util from '../util/util';
 import './launch.less';
-import file from '../util/file';
 
 /**
  * @file 启动屏
@@ -73,7 +73,7 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
     e.preventDefault();
     const { form } = this.props;
 
-    file.selectPath().then((res) => {
+    File.selectPath().then((res) => {
       if (res.filePaths.length) {
         form.setFieldsValue({ path: res.filePaths[0] });
       }
@@ -114,7 +114,7 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
       <Layout className='mf-launch'>
         <Layout className='mf-launch-layout'>
           <h2>
-            <img src='/assets/img/dock.png' />
+            <img src={Util.getFilePath('/assets/img/dock.png')} />
             Init Your Project
           </h2>
           <Form {...itemLayout} onSubmit={this.submitHandle} className='mf-form'>

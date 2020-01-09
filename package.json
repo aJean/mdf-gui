@@ -2,7 +2,7 @@
   "name": "mf-gui",
   "version": "1.0.0",
   "description": "mf-enhance dev gui tools",
-  "main": "master.js",
+  "main": "run.js",
   "dependencies": {
     "antd": "^3.26.2",
     "axios": "^0.19.0",
@@ -24,7 +24,8 @@
     "redux-actions": "^2.6.5",
     "rimraf": "^3.0.0",
     "vscode-icons-js": "^9.3.0",
-    "write": "^2.0.0"
+    "write": "^2.0.0",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -57,8 +58,11 @@
     "webpack-dev-server": "^3.9.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --inline & npx electron .",
-    "dev": "webpack-dev-server --hot --inline"
+    "run:dev": "webpack-dev-server --config ./config/webpack.dev.js --hot --inline",
+    "run:prod": "webpack --config ./config/webpack.prod.js",
+    "start": "npm run run:dev & npx electron run.js --dev",
+    "start:prod": "npm run run:prod && npx electron .",
+    "test": "npx electron ."
   },
   "author": "aJean",
   "repository": "https://github.com/aJean/mf-gui.git",
