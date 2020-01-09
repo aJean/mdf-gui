@@ -54,7 +54,7 @@ export default class Status extends React.PureComponent<any, any> {
     return (
       <div className='mf-status'>
         <div className='mf-status-file'>
-          <img src='/assets/logos/status-logo.svg' />
+          <img src='/assets/img/status-logo.svg' />
           <em>{project ? project.name : '--'}</em>
           <span>{path}</span>
           {codeStatus == 'edit' ? <span className='mf-status-todo'></span> : null}

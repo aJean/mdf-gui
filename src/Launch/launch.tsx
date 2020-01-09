@@ -114,7 +114,7 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
       <Layout className='mf-launch'>
         <Layout className='mf-launch-layout'>
           <h2>
-            <img src='/assets/logos/dock.png' />
+            <img src='/assets/img/dock.png' />
             Init Your Project
           </h2>
           <Form {...itemLayout} onSubmit={this.submitHandle} className='mf-form'>

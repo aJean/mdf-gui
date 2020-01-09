@@ -32,7 +32,7 @@ function createWindow() {
  * tray 菜单
  */
 function createTrayMenu() {
-  const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/logos/tray.png`);
+  const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/img/tray.png`);
 
   tray = new Tray(icon);
   tray.on('click', () => win && win.show());
@@ -42,7 +42,7 @@ function createTrayMenu() {
  * dock 菜单
  */
 function createDockMenu() {
-  const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/logos/dock.png`);
+  const icon = nativeImage.createFromPath(`${app.getAppPath()}/assets/img/dock.png`);
   let docWin;
 
   const dockTempalte = [

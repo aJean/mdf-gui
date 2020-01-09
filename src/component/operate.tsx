@@ -35,7 +35,7 @@ export default class Operate extends React.Component<any, any> {
   componentDidMount() {
     mfconsole = Hook(
       Object.assign({}, window.console),
-      (log) => this.setState({ logs: [...this.state.logs, log] }),
+      (log: any) => this.setState({ logs: [...this.state.logs, log] }),
       false
     );
   }
@@ -79,9 +79,11 @@ export default class Operate extends React.Component<any, any> {
     const data = {
       name: project.name,
       context: `${cwd}/temp`,
-      output: `${cwd}/dist`
+      output: `${cwd}/assets/pkg`
     };
     const temp = `${cwd}/config/temp.config.js`;
+    // clean mfconsole
+    this.state.logs = [];
 
     mfconsole.warn('start to build ...');
     const code = File.readFile(`${cwd}/config/build.tpl`);
@@ -92,7 +94,7 @@ export default class Operate extends React.Component<any, any> {
 
     Util.shell(
       `
-      mkdir -p dist temp
+      mkdir -p temp
       cp -r ${project.path}/src/* ./temp
       npx webpack --config ${temp}
       rm -rf ./temp ${temp}
@@ -100,6 +102,8 @@ export default class Operate extends React.Component<any, any> {
     )
       .then((data) => mfconsole.info(data))
       .catch((e) => mfconsole.error(e));
+
+    // TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容
   }
 
   /**
@@ -123,6 +127,7 @@ export default class Operate extends React.Component<any, any> {
    */
   deploy = () => {
     const { project } = this.props;
+    this.state.logs = [];
 
     axios
       .post(project.deploy, { test: 1 })
