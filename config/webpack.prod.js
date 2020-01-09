@@ -52,7 +52,7 @@ module.exports = {
       {
         test: /\.tsx?/,
         use: 'ts-loader',
-        exclude: /dist|node_modules/
+        exclude: /dist|build|node_modules/
       },
       {
         test: /\.less$/,
