@@ -1,9 +1,9 @@
 // import fg = require('fast-glob');
 import dirTree = require('directory-tree');
-import path = require('path');
 import fs = require('fs');
 import write = require('write');
 import rimraf = require('rimraf');
+const remote = require('electron').remote;
 
 /**
  * @file 文件工具
@@ -77,7 +77,7 @@ export default {
    */
   readConfig() {
     try {
-      const config = fs.readFileSync(path.resolve(process.cwd(), 'config/project.json'));
+      const config = fs.readFileSync(`${remote.getGlobal('info').appPath}/config/project.json`);
       return JSON.parse(config.toString());
     } catch (e) {
       return null;
@@ -93,8 +93,8 @@ export default {
     }
 
     try {
-      const file = path.resolve(process.cwd(), 'config/project.json');
-      return write.sync(file, data, { newline: true, overwrite: true });
+      const filePath = `${remote.getGlobal('info').appPath}/config/project.json`;
+      return write.sync(filePath, data, { newline: true, overwrite: true });
     } catch (e) {
       return { code: -1, msg: e.message };
     }

@@ -74,5 +74,12 @@ export default {
     const info = remote.getGlobal('info');
     const protocol = process.env.NODE_ENV === 'production' ? `file://${info.appPath}` : ``;
     return `${protocol}${url}`;
+  },
+
+  /**
+   * 获取 app 路径，代替 __dirname && process.cwd()
+   */
+  getAppPath() {
+    return remote.getGlobal('info').appPath;
   }
 };

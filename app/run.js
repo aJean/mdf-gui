@@ -23,7 +23,7 @@ function createWindow() {
 
   argv.dev ? loadDevServer(win) : loadFile(win);
   // mac usually hide when click close
-  win.on('close', e => {
+  win.on('close', (e) => {
     e.preventDefault();
     win.hide();
   });
@@ -61,8 +61,8 @@ function createDockMenu() {
         });
         docWin.loadURL(`file://${app.getAppPath()}/config/readme.html`);
 
-        docWin.on('closed', e => {
-          docWin = null
+        docWin.on('closed', (e) => {
+          docWin = null;
         });
       }
     }
@@ -74,6 +74,7 @@ function createDockMenu() {
 }
 
 function registerCmd() {
+  // argv.dev && 
   globalShortcut.register('CommandOrControl+Alt+J', function() {
     win && win.webContents.openDevTools();
   });
@@ -84,7 +85,7 @@ function registerCmd() {
  */
 function loadDevServer(win, limit = 5) {
   const deep = () => {
-    win.loadURL(`http://localhost:3000/`).catch(e => {
+    win.loadURL(`http://localhost:3000/`).catch((e) => {
       if (--limit == 0) {
         dialog.showErrorBox('dev server', e.message);
         win.destroy();
@@ -117,4 +118,8 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('before-quit', () => setTimeout(() => app.exit(0), 500));
+
 app.on('activate', () => win && win.show());
+
+app.on('renderer-process-crashed', (e) => console.log(e));

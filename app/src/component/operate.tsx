@@ -74,19 +74,19 @@ export default class Operate extends React.Component<any, any> {
    * 本地编译
    */
   build() {
-    const cwd = process.cwd();
+    const appPath = Util.getAppPath();
     const { project } = this.props;
     const data = {
       name: project.name,
-      context: `${cwd}/temp`,
-      output: `${cwd}/assets/pkg`
+      context: `${appPath}/temp`,
+      output: `${appPath}/assets/pkg`
     };
-    const temp = `${cwd}/config/temp.config.js`;
+    const temp = `${appPath}/config/temp.config.js`;
     // clean mfconsole
     this.state.logs = [];
 
     mfconsole.warn('start to build ...');
-    const code = File.readFile(`${cwd}/config/build.tpl`);
+    const code = File.readFile(`${appPath}/config/build.tpl`);
     File.writeFile(
       temp,
       code.replace(/<%([^%>]*)%>/g, ($, $1) => data[$1])
@@ -218,7 +218,7 @@ export default class Operate extends React.Component<any, any> {
           visible={vbuild}
           maskClosable={false}
           footer={null}
-          title={process.cwd() + '/assets/pkg'}
+          title={Util.getAppPath() + '/assets/pkg'}
           onCancel={this.closeBuildHandle}>
           <div>
             <Console logs={logs} variant='dark' />

@@ -155,14 +155,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 117:
+/***/ 118:
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
 
-/***/ 122:
+/***/ 123:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,17 +189,10 @@ exports.default = {
 
 /***/ }),
 
-/***/ 123:
+/***/ 124:
 /***/ (function(module, exports) {
 
 module.exports = require("assert");
-
-/***/ }),
-
-/***/ 126:
-/***/ (function(module, exports) {
-
-module.exports = require("electron");
 
 /***/ }),
 
@@ -210,7 +203,7 @@ module.exports = require("events");
 
 /***/ }),
 
-/***/ 23:
+/***/ 24:
 /***/ (function(module, exports) {
 
 module.exports = require("path");
@@ -259,18 +252,20 @@ if (false) {}
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_redux_1 = __webpack_require__(118);
-var react_router_1 = __webpack_require__(966);
+var react_redux_1 = __webpack_require__(119);
+var react_router_1 = __webpack_require__(969);
 var store_1 = __webpack_require__(476);
 var ide_1 = __webpack_require__(492);
-__webpack_require__(962);
+var boundary_1 = __webpack_require__(962);
+__webpack_require__(965);
 /**
  * @file memory router from electron
  */
 function default_1() {
-    return (React.createElement(react_redux_1.Provider, { store: store_1.default },
-        React.createElement(react_router_1.MemoryRouter, null,
-            React.createElement(react_router_1.Route, { exact: true, path: '/', component: ide_1.default }))));
+    return (React.createElement(boundary_1.default, null,
+        React.createElement(react_redux_1.Provider, { store: store_1.default },
+            React.createElement(react_router_1.MemoryRouter, null,
+                React.createElement(react_router_1.Route, { exact: true, path: '/', component: ide_1.default })))));
 }
 exports.default = default_1;
 
@@ -309,7 +304,7 @@ exports.default = redux_1.createStore(reducers, initState);
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 var redux_actions_1 = __webpack_require__(440);
-var action_1 = __webpack_require__(122);
+var action_1 = __webpack_require__(123);
 var file_1 = __webpack_require__(58);
 /**
  * @file home reducer
@@ -369,7 +364,7 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var antd_1 = __webpack_require__(92);
-var react_redux_1 = __webpack_require__(118);
+var react_redux_1 = __webpack_require__(119);
 var operate_1 = __webpack_require__(799);
 var fileIcon_1 = __webpack_require__(935);
 var code_1 = __webpack_require__(944);
@@ -760,10 +755,10 @@ webpackContext.id = 546;
 Object.defineProperty(exports, "__esModule", { value: true });
 // import fg = require('fast-glob');
 var dirTree = __webpack_require__(480);
-var path = __webpack_require__(23);
 var fs = __webpack_require__(28);
 var write = __webpack_require__(481);
 var rimraf = __webpack_require__(484);
+var remote = __webpack_require__(95).remote;
 /**
  * @file 文件工具
  */
@@ -830,7 +825,7 @@ exports.default = {
      */
     readConfig: function () {
         try {
-            var config = fs.readFileSync(path.resolve(process.cwd(), 'config/project.json'));
+            var config = fs.readFileSync(remote.getGlobal('info').appPath + "/config/project.json");
             return JSON.parse(config.toString());
         }
         catch (e) {
@@ -845,8 +840,8 @@ exports.default = {
             data = JSON.stringify(data);
         }
         try {
-            var file = path.resolve(process.cwd(), 'config/project.json');
-            return write.sync(file, data, { newline: true, overwrite: true });
+            var filePath = remote.getGlobal('info').appPath + "/config/project.json";
+            return write.sync(filePath, data, { newline: true, overwrite: true });
         }
         catch (e) {
             return { code: -1, msg: e.message };
@@ -892,7 +887,7 @@ exports.default = {
      * 选择系统路径
      */
     selectPath: function () {
-        var dialog = __webpack_require__(126).remote.dialog;
+        var dialog = __webpack_require__(95).remote.dialog;
         return dialog.showOpenDialog({ properties: ['openDirectory'], buttonLabel: '选择' });
     }
 };
@@ -910,7 +905,7 @@ exports.default = {
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var CMD = __webpack_require__(879);
-var remote = __webpack_require__(126).remote;
+var remote = __webpack_require__(95).remote;
 var FileType = {
     js: 'JavaScript',
     ts: 'TypeScript',
@@ -951,7 +946,7 @@ exports.default = {
         return CodeType[ext];
     },
     getLocalWin: function () {
-        return __webpack_require__(126).remote.getCurrentWindow();
+        return __webpack_require__(95).remote.getCurrentWindow();
     },
     /**
      * 执行 cli 命令
@@ -970,6 +965,12 @@ exports.default = {
         var info = remote.getGlobal('info');
         var protocol =  true ? "file://" + info.appPath : undefined;
         return "" + protocol + url;
+    },
+    /**
+     * 获取 app 路径，代替 __dirname && process.cwd()
+     */
+    getAppPath: function () {
+        return remote.getGlobal('info').appPath;
     }
 };
 
@@ -1186,18 +1187,18 @@ var Operate = /** @class */ (function (_super) {
      * 本地编译
      */
     Operate.prototype.build = function () {
-        var cwd = process.cwd();
+        var appPath = util_1.default.getAppPath();
         var project = this.props.project;
         var data = {
             name: project.name,
-            context: cwd + "/temp",
-            output: cwd + "/assets/pkg"
+            context: appPath + "/temp",
+            output: appPath + "/assets/pkg"
         };
-        var temp = cwd + "/config/temp.config.js";
+        var temp = appPath + "/config/temp.config.js";
         // clean mfconsole
         this.state.logs = [];
         mfconsole.warn('start to build ...');
-        var code = file_1.default.readFile(cwd + "/config/build.tpl");
+        var code = file_1.default.readFile(appPath + "/config/build.tpl");
         file_1.default.writeFile(temp, code.replace(/<%([^%>]*)%>/g, function ($, $1) { return data[$1]; }));
         util_1.default.shell("\n      mkdir -p temp\n      cp -r " + project.path + "/src/* ./temp\n      npx webpack --config " + temp + "\n      rm -rf ./temp " + temp + "\n      ")
             .then(function (data) { return mfconsole.info(data); })
@@ -1233,7 +1234,7 @@ var Operate = /** @class */ (function (_super) {
             React.createElement(antd_1.Modal, { className: 'mf-build-modal', visible: vdeploy, maskClosable: false, footer: null, title: project.deploy, onCancel: this.closeDeployHandle },
                 React.createElement("div", null,
                     React.createElement(console_feed_1.Console, { logs: logs, variant: 'dark' }))),
-            React.createElement(antd_1.Modal, { className: 'mf-build-modal', visible: vbuild, maskClosable: false, footer: null, title: process.cwd() + '/assets/pkg', onCancel: this.closeBuildHandle },
+            React.createElement(antd_1.Modal, { className: 'mf-build-modal', visible: vbuild, maskClosable: false, footer: null, title: util_1.default.getAppPath() + '/assets/pkg', onCancel: this.closeBuildHandle },
                 React.createElement("div", null,
                     React.createElement(console_feed_1.Console, { logs: logs, variant: 'dark' })))));
     };
@@ -1275,10 +1276,10 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_redux_1 = __webpack_require__(118);
+var react_redux_1 = __webpack_require__(119);
 var redux_1 = __webpack_require__(93);
 var antd_1 = __webpack_require__(92);
-var action_1 = __webpack_require__(122);
+var action_1 = __webpack_require__(123);
 var file_1 = __webpack_require__(58);
 var util_1 = __webpack_require__(78);
 __webpack_require__(881);
@@ -1422,7 +1423,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -1434,7 +1435,7 @@ if (content.locals) {
 /***/ 882:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, ".mf-launch {\n  height: 400px;\n  font-family: \"Comic Sans MS\", Monaco, Microsoft YaHei, PingFang SC, STHeiti, SimHei, sans-serif;\n}\n.mf-launch .ant-form-item label {\n  font-weight: 700;\n}\n.mf-launch .mf-launch-layout {\n  justify-content: center;\n}\n.mf-launch h2 {\n  text-align: center;\n  color: #464646;\n}\n.mf-launch h2 img {\n  width: 30px;\n  height: 30px;\n  margin-right: 10px;\n  vertical-align: bottom;\n}\n.mf-launch .mf-form {\n  margin-top: 50px;\n  text-align: center;\n}\n.mf-launch .mf-form .mf-form-cancel {\n  margin-right: 10px;\n}\n.mf-launch .mf-form .mf-form-save {\n  margin-top: 10px;\n}\n.mf-launch .mf-form .ant-form-explain {\n  text-align: left;\n}\n.ant-modal-body {\n  font-family: \"Comic Sans MS\", Monaco, Microsoft YaHei, PingFang SC, STHeiti, SimHei, sans-serif;\n}\n", ""]);
 
@@ -1455,7 +1456,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -1467,7 +1468,7 @@ if (content.locals) {
 /***/ 884:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, ".mf-select {\n  display: inline-flex;\n  align-items: center;\n  font-size: 14px;\n}\n.mf-select label {\n  margin-right: 10px;\n}\n.mf-select em {\n  margin-left: 5px;\n  color: red;\n}\n.mf-launch-modal {\n  top: 0 !important;\n}\n.mf-launch-modal .ant-modal-body {\n  padding: 0;\n}\n.mf-build-modal .ant-modal-header {\n  padding: 10px;\n  background: #1890ff;\n  border-bottom: none;\n}\n.mf-build-modal .ant-modal-header .ant-modal-title {\n  color: #fff;\n}\n.mf-build-modal .ant-modal-body {\n  min-height: 200px;\n  padding: 0;\n  background: #242424;\n}\n.mf-build-modal .ant-modal-body * {\n  font-size: 14px !important;\n}\n.mf-build-modal .ant-modal-body .css-5l7c0w,\n.mf-build-modal .ant-modal-body .css-17pf22k,\n.mf-build-modal .ant-modal-body .css-lbd0fj {\n  height: 25px;\n}\n.mf-build-modal .ant-modal-close-x {\n  height: 43px;\n  line-height: 43px;\n}\n.mf-build-modal .ant-modal-close-x .ant-modal-close-icon {\n  color: #fff;\n}\n", ""]);
 
@@ -1540,7 +1541,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -1552,7 +1553,7 @@ if (content.locals) {
 /***/ 943:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, ".mf-fileicon img {\n  width: 22px;\n  height: 22px;\n  background-size: cover;\n}\n", ""]);
 
@@ -1686,6 +1687,13 @@ exports.default = Code;
 
 /***/ }),
 
+/***/ 95:
+/***/ (function(module, exports) {
+
+module.exports = require("electron");
+
+/***/ }),
+
 /***/ 952:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1700,7 +1708,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -1712,7 +1720,7 @@ if (content.locals) {
 /***/ 953:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, ".mf-code {\n  position: relative;\n  text-align: left;\n}\n.mf-code .CodeMirror {\n  height: auto;\n}\n", ""]);
 
@@ -1818,7 +1826,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -1830,7 +1838,7 @@ if (content.locals) {
 /***/ 956:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, ".mf-status {\n  position: relative;\n  height: 40px;\n  line-height: 40px;\n  color: #909090;\n}\n.mf-status .mf-status-file {\n  position: absolute;\n  left: 15px;\n}\n.mf-status .mf-status-file img {\n  width: 20px;\n  height: 20px;\n  margin-right: 5px;\n}\n.mf-status .mf-status-file em {\n  margin-right: 20px;\n  font-weight: 700;\n}\n.mf-status .mf-status-type {\n  position: absolute;\n  right: 15px;\n}\n.mf-status .mf-status-type em {\n  margin-right: 20px;\n}\n.mf-status .mf-status-todo {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  margin-left: 10px;\n  vertical-align: -1px;\n  background: #9d9d9d;\n}\n", ""]);
 
@@ -1859,10 +1867,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_dom_1 = __webpack_require__(9);
 var antd_1 = __webpack_require__(92);
-var react_redux_1 = __webpack_require__(118);
+var react_redux_1 = __webpack_require__(119);
 var redux_1 = __webpack_require__(93);
-var react_contextmenu_1 = __webpack_require__(964);
-var action_1 = __webpack_require__(122);
+var react_contextmenu_1 = __webpack_require__(967);
+var action_1 = __webpack_require__(123);
 var file_1 = __webpack_require__(58);
 __webpack_require__(958);
 /**
@@ -2002,7 +2010,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -2014,7 +2022,7 @@ if (content.locals) {
 /***/ 959:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, "/** context-menu style */\n.mf-contextmenu .react-contextmenu {\n  min-width: 160px;\n  padding: 5px 0;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 0.25rem;\n  margin: 2px 0 0;\n  font-size: 12px;\n  text-align: left;\n  background-color: #d0d0d0;\n  background-clip: padding-box;\n  color: #373a3c;\n  outline: none;\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 250ms ease !important;\n}\n.mf-contextmenu .react-contextmenu.react-contextmenu--visible {\n  opacity: 1;\n  pointer-events: auto;\n  z-index: 9999;\n}\n.mf-contextmenu .react-contextmenu-item {\n  padding: 3px 20px;\n  border: 0;\n  line-height: 1.5;\n  font-weight: 400;\n  text-align: inherit;\n  background: 0 0;\n  color: #373a3c;\n  cursor: pointer;\n  white-space: nowrap;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--active,\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--selected {\n  color: #fff;\n  background-color: #0a8ff5;\n  border-color: #0a8ff5;\n  text-decoration: none;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--disabled,\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--disabled:hover {\n  background-color: transparent;\n  border-color: rgba(0, 0, 0, 0.15);\n  color: #878a8c;\n}\n.mf-contextmenu .react-contextmenu-item--divider {\n  padding: 2px 0;\n  margin-bottom: 3px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.15);\n  cursor: inherit;\n}\n.mf-contextmenu .react-contextmenu-item--divider:hover {\n  background-color: transparent;\n  border-color: rgba(0, 0, 0, 0.15);\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-submenu {\n  padding: 0;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after {\n  content: '▶';\n  display: inline-block;\n  position: absolute;\n  right: 7px;\n}\n.mf-contextmenu .example-multiple-targets::after {\n  content: attr(data-count);\n  display: block;\n}\n.mf-filemodal {\n  width: 200px !important;\n  margin: 0 !important;\n}\n.mf-filemodal .ant-modal-body {\n  padding: 10px;\n}\n.mf-filemodal .ant-modal-footer {\n  padding: 10px;\n}\n.mf-filemodal .ant-btn {\n  font-size: 12px;\n  line-height: 28px;\n  height: 28px;\n}\n", ""]);
 
@@ -2035,7 +2043,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(41)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -2047,9 +2055,90 @@ if (content.locals) {
 /***/ 961:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(false);
+exports = module.exports = __webpack_require__(40)(false);
 // Module
 exports.push([module.i, "/** home console */\n.mf-home {\n  height: 100vh;\n}\n.mf-home .ant-layout-footer {\n  height: 60px;\n}\n.mf-home .ant-layout-sider {\n  padding-top: 5px;\n  background: #272727;\n  -webkit-user-select: none;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper {\n  padding: 0 8px 0 5px;\n  color: #fff;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {\n  background: #444;\n  color: #e2c08d;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper:hover {\n  background: #444;\n}\n.mf-home .ant-layout-sider .ant-tree li span.ant-tree-iconEle {\n  margin-right: 5px;\n}\n.mf-home .ant-layout-content {\n  padding-top: 10px;\n  background: #263238;\n  color: #fff;\n}\n.mf-home .mf-info {\n  padding: 10px 0;\n  font-weight: 600;\n  font-size: 16px;\n  text-align: center;\n}\n.mf-home .mf-info button {\n  margin-left: 10px;\n  font-size: 12px;\n}\n.mf-home .mf-filelist {\n  position: relative;\n  min-height: 400px;\n  text-align: left;\n}\n.mf-home .mf-filelist .anticon-caret-down {\n  color: #fff;\n}\n.mf-home .mf-footer {\n  padding: 0;\n  height: 40px;\n  background: #202020;\n}\n", ""]);
+
+
+/***/ }),
+
+/***/ 962:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+__webpack_require__(963);
+/**
+ * @file 错误边界
+ */
+var ErrorBoundary = /** @class */ (function (_super) {
+    __extends(ErrorBoundary, _super);
+    function ErrorBoundary() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = { hasError: false, e: null };
+        return _this;
+    }
+    ErrorBoundary.getDerivedStateFromError = function (e) {
+        return { hasError: true, e: e };
+    };
+    ErrorBoundary.prototype.render = function () {
+        var children = this.props.children;
+        var _a = this.state, hasError = _a.hasError, e = _a.e;
+        return hasError ? React.createElement("div", { className: "mf-error" },
+            React.createElement("h1", null, "app exception"),
+            React.createElement("p", null, e.message)) : children;
+    };
+    return ErrorBoundary;
+}(React.Component));
+exports.default = ErrorBoundary;
+
+
+/***/ }),
+
+/***/ 963:
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(964);
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(41)(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
+
+
+/***/ }),
+
+/***/ 964:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(40)(false);
+// Module
+exports.push([module.i, ".mf-error {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  height: 100vh;\n}\n.mf-error p {\n  font-size: 18px;\n  color: #f41e1e;\n}\n", ""]);
 
 
 /***/ })
