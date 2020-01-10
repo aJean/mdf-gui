@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  devtool: 'eval',
+  devtool: false,
   target: 'electron-renderer',
   node: {
     __dirname: true
@@ -109,5 +109,8 @@ module.exports = {
   ],
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx']
+  },
+  externals: {
+    webpack: 'commonjs webpack'
   }
 };

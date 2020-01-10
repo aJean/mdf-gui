@@ -92,12 +92,15 @@ export default class Operate extends React.Component<any, any> {
       code.replace(/<%([^%>]*)%>/g, ($, $1) => data[$1])
     );
 
+    const webpack = require('webpack');
+    console.log(webpack)
+
     Util.shell(
       `
       cd ${appPath}
       mkdir -p temp
       cp -r ${project.path}/src/* ./temp
-      npx webpack --config ${temp}
+      ${appPath}/node_modules/webpack/bin/webpack.js --config ${temp}
       rm -rf ./temp ${temp}
       `
     )
