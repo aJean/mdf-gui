@@ -122,7 +122,7 @@ class Launch extends React.Component<LaunchProps & FormComponentProps, any> {
               {getFieldDecorator('path', {
                 rules: [{ required: true, message: 'Please input project path' }],
                 initialValue: project && project.path
-              })(<Input size='default' placeholder='project absolute path' onClick={this.selectHandle} />)}
+              })(<Input size='default' placeholder='project absolute path' onMouseDown={this.selectHandle} />)}
             </Form.Item>
             <Form.Item label='项目名称'>
               {getFieldDecorator('name', {

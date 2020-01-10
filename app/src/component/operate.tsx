@@ -218,7 +218,7 @@ export default class Operate extends React.Component<any, any> {
           visible={vbuild}
           maskClosable={false}
           footer={null}
-          title={process.cwd() + '/dist'}
+          title={process.cwd() + '/assets/pkg'}
           onCancel={this.closeBuildHandle}>
           <div>
             <Console logs={logs} variant='dark' />

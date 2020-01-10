@@ -101,7 +101,7 @@ function loadDevServer(win, limit = 5) {
  * 加载本地文件 -- prod
  */
 function loadFile(win) {
-  win.loadURL(`file://${app.getAppPath()}/build/index.html`);
+  win.loadURL(`file://${app.getAppPath()}/dist/index.html`);
 }
 
 app.on('ready', function() {

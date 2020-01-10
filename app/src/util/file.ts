@@ -140,6 +140,6 @@ export default {
    */
   selectPath() {
     const dialog = require('electron').remote.dialog;
-    return dialog.showOpenDialog({ properties: ['openDirectory'] });
+    return dialog.showOpenDialog({ properties: ['openDirectory'], buttonLabel: '选择'});
   }
 };
