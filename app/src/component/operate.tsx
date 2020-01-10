@@ -94,6 +94,7 @@ export default class Operate extends React.Component<any, any> {
 
     Util.shell(
       `
+      cd ${appPath}
       mkdir -p temp
       cp -r ${project.path}/src/* ./temp
       npx webpack --config ${temp}

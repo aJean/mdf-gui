@@ -1200,7 +1200,7 @@ var Operate = /** @class */ (function (_super) {
         mfconsole.warn('start to build ...');
         var code = file_1.default.readFile(appPath + "/config/build.tpl");
         file_1.default.writeFile(temp, code.replace(/<%([^%>]*)%>/g, function ($, $1) { return data[$1]; }));
-        util_1.default.shell("\n      mkdir -p temp\n      cp -r " + project.path + "/src/* ./temp\n      npx webpack --config " + temp + "\n      rm -rf ./temp " + temp + "\n      ")
+        util_1.default.shell("\n      cd " + appPath + "\n      mkdir -p temp\n      cp -r " + project.path + "/src/* ./temp\n      npx webpack --config " + temp + "\n      rm -rf ./temp " + temp + "\n      ")
             .then(function (data) { return mfconsole.info(data); })
             .catch(function (e) { return mfconsole.error(e); });
         // TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容

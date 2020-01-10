@@ -16,6 +16,13 @@ export default class ErrorBoundary extends React.Component {
     const { children } = this.props;
     const { hasError, e } = this.state;
 
-    return hasError ? <div className="mf-error"><h1>app exception</h1><p>{e.message}</p></div> : children;
+    return hasError ? (
+      <div className='mf-error'>
+        <h1>app exception</h1>
+        <p>{e.message}</p>
+      </div>
+    ) : (
+      children
+    );
   }
 }
