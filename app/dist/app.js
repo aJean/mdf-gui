@@ -148,490 +148,28 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([494,1]);
+/******/ 	deferredModules.push([464,1]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 1000:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var util_1 = __webpack_require__(90);
-__webpack_require__(1001);
-/**
- * @file 状态栏
- */
-var PubSub = __webpack_require__(469);
-var Status = /** @class */ (function (_super) {
-    __extends(Status, _super);
-    function Status() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.state = {
-            codeStatus: 'normal',
-            file: null
-        };
-        return _this;
-    }
-    Status.getDerivedStateFromProps = function (props, state) {
-        return {
-            file: state.file || props.file
-        };
-    };
-    Status.prototype.componentDidMount = function () {
-        var _this = this;
-        // out of react transaction
-        PubSub.subscribe('code-edit', function () {
-            if (_this.state.codeStatus == 'normal') {
-                _this.setState({ codeStatus: 'edit' });
-                console.log(2);
-            }
-        });
-        PubSub.subscribe('code-save', function () { return _this.setState({ codeStatus: 'normal' }); });
-        PubSub.subscribe('code-load', function () { return _this.setState({ codeStatus: 'normal' }); });
-    };
-    Status.prototype.componentWillUnmount = function () {
-        PubSub.clearAllSubscriptions();
-    };
-    Status.prototype.acceptFile = function (file) {
-        this.setState({ file: file });
-    };
-    Status.prototype.render = function () {
-        var project = this.props.project;
-        var _a = this.state, codeStatus = _a.codeStatus, file = _a.file;
-        var type = '--';
-        var path = '--';
-        if (file) {
-            path = file.path;
-            type = util_1.default.getFileType(path);
-        }
-        return (React.createElement("div", { className: 'mf-status' },
-            React.createElement("div", { className: 'mf-status-file' },
-                React.createElement("img", { src: util_1.default.getFilePath('/assets/img/status-logo.svg') }),
-                React.createElement("em", null, project ? project.name : '--'),
-                React.createElement("span", null, path),
-                codeStatus == 'edit' ? React.createElement("span", { className: 'mf-status-todo' }) : null),
-            React.createElement("div", { className: 'mf-status-type' },
-                React.createElement("em", null, "UTF-8"),
-                React.createElement("span", null, type))));
-    };
-    return Status;
-}(React.PureComponent));
-exports.default = Status;
-
-
-/***/ }),
-
-/***/ 1001:
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(45);
-            var content = __webpack_require__(1002);
-
-            content = content.__esModule ? content.default : content;
-
-            if (typeof content === 'string') {
-              content = [[module.i, content, '']];
-            }
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = api(module.i, content, options);
-
-var exported = content.locals ? content.locals : {};
-
-
-
-module.exports = exported;
-
-/***/ }),
-
-/***/ 1002:
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, ".mf-status {\n  position: relative;\n  height: 40px;\n  line-height: 40px;\n  color: #909090;\n}\n.mf-status .mf-status-file {\n  position: absolute;\n  left: 15px;\n}\n.mf-status .mf-status-file img {\n  width: 20px;\n  height: 20px;\n  margin-right: 5px;\n}\n.mf-status .mf-status-file em {\n  margin-right: 20px;\n  font-weight: 700;\n}\n.mf-status .mf-status-type {\n  position: absolute;\n  right: 15px;\n}\n.mf-status .mf-status-type em {\n  margin-right: 20px;\n}\n.mf-status .mf-status-todo {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  margin-left: 10px;\n  vertical-align: -1px;\n  background: #9d9d9d;\n}\n", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ 1003:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var react_dom_1 = __webpack_require__(9);
-var antd_1 = __webpack_require__(109);
-var react_redux_1 = __webpack_require__(137);
-var redux_1 = __webpack_require__(110);
-var react_contextmenu_1 = __webpack_require__(1013);
-var action_1 = __webpack_require__(142);
-var file_1 = __webpack_require__(66);
-__webpack_require__(1004);
-/**
- * @file context menu
- */
-var MfMenu = /** @class */ (function (_super) {
-    __extends(MfMenu, _super);
-    function MfMenu() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.state = {
-            path: null,
-            visible: false,
-            pos: null,
-            action: null
-        };
-        _this.clickHandle = function (elem, data) {
-            console.log(data);
-        };
-        /**
-         * 添加文件
-         */
-        _this.addHandle = function (elem, data) {
-            _this.setState({ visible: true, action: data.type });
-        };
-        _this.showModal = function () {
-            _this.setState({ visible: true });
-        };
-        _this.hideModal = function () {
-            _this.setState({ visible: false, action: null });
-        };
-        /**
-         * 处理 add 指令
-         */
-        _this.doAddHandle = function () {
-            var _a = _this.state, path = _a.path, action = _a.action;
-            var node = react_dom_1.findDOMNode(_this.refs.finput);
-            var name = node.value.replace(/\s/g, '');
-            if (!name) {
-                return _this.hideModal();
-            }
-            var flag = action == 'add1' ? 1 : 2;
-            // 如果点击的是文件，修复 path
-            if (/[^.]+\.[a-zA-Z]+/.test(path)) {
-                path = path.replace(/[^./]+\..+/, '');
-            }
-            path = path.replace('/$', '');
-            var res = file_1.default.mknew(path + "/" + name, flag);
-            if (res.code == -1) {
-                antd_1.Modal.error({ title: res.msg });
-            }
-            else {
-                _this.refreshExplore();
-                _this.hideModal();
-            }
-        };
-        /**
-         * 删除文件 & 目录
-         */
-        _this.delHandle = function () {
-            var path = _this.state.path;
-            var res = file_1.default.rm(path);
-            if (res.code == -1) {
-                antd_1.Modal.error({ title: res.msg });
-            }
-            else {
-                _this.refreshExplore();
-            }
-        };
-        /**
-         * 前插右键事件
-         */
-        _this.onContextMenu = function (e) {
-            var state = _this.state;
-            var elem = e.target;
-            var path = elem.getAttribute('data-path');
-            state.path = path;
-            state.pos = { left: e.clientX, top: e.clientY };
-            if (!path) {
-                e.stopPropagation();
-            }
-        };
-        return _this;
-    }
-    MfMenu.prototype.refreshExplore = function () {
-        var _a = this.props, initFileAction = _a.initFileAction, project = _a.project;
-        initFileAction(project.path);
-    };
-    MfMenu.prototype.render = function () {
-        var children = this.props.children;
-        var _a = this.state, pos = _a.pos, visible = _a.visible;
-        var parent = React.cloneElement(children, {
-            onContextMenu: this.onContextMenu
-        });
-        return (React.createElement("div", { className: 'mf-contextmenu' },
-            React.createElement(react_contextmenu_1.ContextMenuTrigger, { id: 'mf-contextmenu-id' }, parent),
-            React.createElement(react_contextmenu_1.ContextMenu, { id: 'mf-contextmenu-id' },
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'finder' }, onClick: this.clickHandle, disabled: true }, "\u5728 Finder \u4E2D\u663E\u793A"),
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'code' }, onClick: this.clickHandle }, "\u5728\u7F16\u8F91\u5668\u4E2D\u6253\u5F00"),
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'iterm' }, onClick: this.clickHandle, disabled: true }, "\u5728\u7EC8\u7AEF\u4E2D\u6253\u5F00"),
-                React.createElement(react_contextmenu_1.MenuItem, { divider: true }),
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'add1' }, onClick: this.addHandle }, "\u65B0\u5EFA\u6587\u4EF6"),
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'add2' }, onClick: this.addHandle }, "\u65B0\u5EFA\u76EE\u5F55"),
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'rename' }, onClick: this.clickHandle, disabled: true }, "\u91CD\u547D\u540D"),
-                React.createElement(react_contextmenu_1.MenuItem, { divider: true }),
-                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'del' }, onClick: this.delHandle }, "\u5220\u9664")),
-            React.createElement(antd_1.Modal, { className: 'mf-filemodal', style: pos, closable: false, visible: visible, onOk: this.doAddHandle, onCancel: this.hideModal, mask: false },
-                React.createElement(antd_1.Input, { ref: 'finput', autoFocus: true }))));
-    };
-    return MfMenu;
-}(React.Component));
-var mapStateToProps = function (state) {
-    return {
-        project: state.project
-    };
-};
-var mapDispatchToProps = function (dispatch) {
-    return {
-        initFileAction: redux_1.bindActionCreators(action_1.default.initFile, dispatch)
-    };
-};
-exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(MfMenu);
-
-
-/***/ }),
-
-/***/ 1004:
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(45);
-            var content = __webpack_require__(1005);
-
-            content = content.__esModule ? content.default : content;
-
-            if (typeof content === 'string') {
-              content = [[module.i, content, '']];
-            }
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = api(module.i, content, options);
-
-var exported = content.locals ? content.locals : {};
-
-
-
-module.exports = exported;
-
-/***/ }),
-
-/***/ 1005:
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, "/** context-menu style */\n.mf-contextmenu .react-contextmenu {\n  min-width: 160px;\n  padding: 5px 0;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 0.25rem;\n  margin: 2px 0 0;\n  font-size: 12px;\n  text-align: left;\n  background-color: #d0d0d0;\n  background-clip: padding-box;\n  color: #373a3c;\n  outline: none;\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 250ms ease !important;\n}\n.mf-contextmenu .react-contextmenu.react-contextmenu--visible {\n  opacity: 1;\n  pointer-events: auto;\n  z-index: 9999;\n}\n.mf-contextmenu .react-contextmenu-item {\n  padding: 3px 20px;\n  border: 0;\n  line-height: 1.5;\n  font-weight: 400;\n  text-align: inherit;\n  background: 0 0;\n  color: #373a3c;\n  cursor: pointer;\n  white-space: nowrap;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--active,\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--selected {\n  color: #fff;\n  background-color: #0a8ff5;\n  border-color: #0a8ff5;\n  text-decoration: none;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--disabled,\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--disabled:hover {\n  background-color: transparent;\n  border-color: rgba(0, 0, 0, 0.15);\n  color: #878a8c;\n}\n.mf-contextmenu .react-contextmenu-item--divider {\n  padding: 2px 0;\n  margin-bottom: 3px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.15);\n  cursor: inherit;\n}\n.mf-contextmenu .react-contextmenu-item--divider:hover {\n  background-color: transparent;\n  border-color: rgba(0, 0, 0, 0.15);\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-submenu {\n  padding: 0;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after {\n  content: '▶';\n  display: inline-block;\n  position: absolute;\n  right: 7px;\n}\n.mf-contextmenu .example-multiple-targets::after {\n  content: attr(data-count);\n  display: block;\n}\n.mf-filemodal {\n  width: 200px !important;\n  margin: 0 !important;\n}\n.mf-filemodal .ant-modal-body {\n  padding: 10px;\n}\n.mf-filemodal .ant-modal-footer {\n  padding: 10px;\n}\n.mf-filemodal .ant-btn {\n  font-size: 12px;\n  line-height: 28px;\n  height: 28px;\n}\n", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ 1006:
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(45);
-            var content = __webpack_require__(1007);
-
-            content = content.__esModule ? content.default : content;
-
-            if (typeof content === 'string') {
-              content = [[module.i, content, '']];
-            }
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = api(module.i, content, options);
-
-var exported = content.locals ? content.locals : {};
-
-
-
-module.exports = exported;
-
-/***/ }),
-
-/***/ 1007:
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, "/** home console */\n.mf-home {\n  height: 100vh;\n}\n.mf-home .ant-layout-footer {\n  height: 60px;\n}\n.mf-home .ant-layout-sider {\n  padding-top: 5px;\n  background: #272727;\n  -webkit-user-select: none;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper {\n  padding: 0 8px 0 5px;\n  color: #fff;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {\n  background: #444;\n  color: #e2c08d;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper:hover {\n  background: #444;\n}\n.mf-home .ant-layout-sider .ant-tree li span.ant-tree-iconEle {\n  margin-right: 5px;\n}\n.mf-home .ant-layout-content {\n  padding-top: 10px;\n  background: #263238;\n  color: #fff;\n}\n.mf-home .mf-info {\n  padding: 10px 0;\n  font-weight: 600;\n  font-size: 16px;\n  text-align: center;\n}\n.mf-home .mf-info button {\n  margin-left: 10px;\n  font-size: 12px;\n}\n.mf-home .mf-filelist {\n  position: relative;\n  min-height: 400px;\n  text-align: left;\n}\n.mf-home .mf-filelist .anticon-caret-down {\n  color: #fff;\n}\n.mf-home .mf-footer {\n  padding: 0;\n  height: 40px;\n  background: #202020;\n}\n", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ 1008:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-__webpack_require__(1009);
-/**
- * @file 错误边界
- */
-var ErrorBoundary = /** @class */ (function (_super) {
-    __extends(ErrorBoundary, _super);
-    function ErrorBoundary() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.state = { hasError: false, e: null };
-        return _this;
-    }
-    ErrorBoundary.getDerivedStateFromError = function (e) {
-        return { hasError: true, e: e };
-    };
-    ErrorBoundary.prototype.render = function () {
-        var children = this.props.children;
-        var _a = this.state, hasError = _a.hasError, e = _a.e;
-        return hasError ? (React.createElement("div", { className: 'mf-error' },
-            React.createElement("h1", null, "app exception"),
-            React.createElement("p", null, e.message))) : (children);
-    };
-    return ErrorBoundary;
-}(React.Component));
-exports.default = ErrorBoundary;
-
-
-/***/ }),
-
-/***/ 1009:
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(45);
-            var content = __webpack_require__(1010);
-
-            content = content.__esModule ? content.default : content;
-
-            if (typeof content === 'string') {
-              content = [[module.i, content, '']];
-            }
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = api(module.i, content, options);
-
-var exported = content.locals ? content.locals : {};
-
-
-
-module.exports = exported;
-
-/***/ }),
-
-/***/ 1010:
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, ".mf-error {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  height: 100vh;\n}\n.mf-error p {\n  font-size: 18px;\n  color: #f41e1e;\n}\n", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ 112:
-/***/ (function(module, exports) {
-
-module.exports = require("util");
-
-/***/ }),
-
-/***/ 113:
+/***/ 108:
 /***/ (function(module, exports) {
 
 module.exports = require("electron");
 
 /***/ }),
 
-/***/ 136:
-/***/ (function(module, exports) {
-
-module.exports = require("stream");
-
-/***/ }),
-
-/***/ 142:
+/***/ 134:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var redux_actions_1 = __webpack_require__(470);
-var file_1 = __webpack_require__(66);
+var redux_actions_1 = __webpack_require__(440);
+var file_1 = __webpack_require__(79);
 /**
  * @file home action
  */
@@ -651,42 +189,14 @@ exports.default = {
 
 /***/ }),
 
-/***/ 143:
-/***/ (function(module, exports) {
-
-module.exports = require("assert");
-
-/***/ }),
-
-/***/ 217:
-/***/ (function(module, exports) {
-
-module.exports = require("events");
-
-/***/ }),
-
-/***/ 26:
-/***/ (function(module, exports) {
-
-module.exports = require("path");
-
-/***/ }),
-
-/***/ 33:
+/***/ 135:
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
 
-/***/ 460:
-/***/ (function(module, exports) {
-
-module.exports = require("os");
-
-/***/ }),
-
-/***/ 494:
+/***/ 464:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -694,7 +204,7 @@ module.exports = require("os");
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var ReactDOM = __webpack_require__(9);
-var router_1 = __webpack_require__(499);
+var router_1 = __webpack_require__(469);
 /**
  * @file 控制台 app
  */
@@ -707,19 +217,19 @@ if (false) {}
 
 /***/ }),
 
-/***/ 499:
+/***/ 469:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_redux_1 = __webpack_require__(137);
-var react_router_1 = __webpack_require__(1015);
-var store_1 = __webpack_require__(505);
-var ide_1 = __webpack_require__(521);
-var boundary_1 = __webpack_require__(1008);
-__webpack_require__(1011);
+var react_redux_1 = __webpack_require__(129);
+var react_router_1 = __webpack_require__(928);
+var store_1 = __webpack_require__(475);
+var ide_1 = __webpack_require__(482);
+var boundary_1 = __webpack_require__(921);
+__webpack_require__(924);
 /**
  * @file memory router from electron
  */
@@ -734,14 +244,14 @@ exports.default = default_1;
 
 /***/ }),
 
-/***/ 505:
+/***/ 475:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var redux_1 = __webpack_require__(110);
-var reducer_1 = __webpack_require__(506);
+var redux_1 = __webpack_require__(106);
+var reducer_1 = __webpack_require__(476);
 /**
  * @file home store
  */
@@ -758,16 +268,16 @@ exports.default = redux_1.createStore(reducers, initState);
 
 /***/ }),
 
-/***/ 506:
+/***/ 476:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
-var redux_actions_1 = __webpack_require__(470);
-var action_1 = __webpack_require__(142);
-var file_1 = __webpack_require__(66);
+var redux_actions_1 = __webpack_require__(440);
+var action_1 = __webpack_require__(134);
+var file_1 = __webpack_require__(79);
 /**
  * @file home reducer
  */
@@ -794,7 +304,28 @@ exports.fileReducer = redux_actions_1.handleActions((_b = {},
 
 /***/ }),
 
-/***/ 521:
+/***/ 479:
+/***/ (function(module, exports) {
+
+module.exports = require("directory-tree");
+
+/***/ }),
+
+/***/ 480:
+/***/ (function(module, exports) {
+
+module.exports = require("write");
+
+/***/ }),
+
+/***/ 481:
+/***/ (function(module, exports) {
+
+module.exports = require("rimraf");
+
+/***/ }),
+
+/***/ 482:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -825,16 +356,16 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var antd_1 = __webpack_require__(109);
-var react_redux_1 = __webpack_require__(137);
-var operate_1 = __webpack_require__(844);
-var fileIcon_1 = __webpack_require__(981);
-var code_1 = __webpack_require__(990);
-var status_1 = __webpack_require__(1000);
-var menu_1 = __webpack_require__(1003);
-var util_1 = __webpack_require__(90);
-var file_1 = __webpack_require__(66);
-__webpack_require__(1006);
+var antd_1 = __webpack_require__(105);
+var react_redux_1 = __webpack_require__(129);
+var operate_1 = __webpack_require__(805);
+var fileIcon_1 = __webpack_require__(894);
+var code_1 = __webpack_require__(903);
+var status_1 = __webpack_require__(913);
+var menu_1 = __webpack_require__(916);
+var util_1 = __webpack_require__(87);
+var file_1 = __webpack_require__(79);
+__webpack_require__(919);
 /**
  * @file 控制台主窗口
  */
@@ -927,264 +458,264 @@ exports.default = react_redux_1.connect(mapStateToProps)(Home);
 
 /***/ }),
 
-/***/ 578:
+/***/ 539:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 235,
-	"./af.js": 235,
-	"./ar": 236,
-	"./ar-dz": 237,
-	"./ar-dz.js": 237,
-	"./ar-kw": 238,
-	"./ar-kw.js": 238,
-	"./ar-ly": 239,
-	"./ar-ly.js": 239,
-	"./ar-ma": 240,
-	"./ar-ma.js": 240,
-	"./ar-sa": 241,
-	"./ar-sa.js": 241,
-	"./ar-tn": 242,
-	"./ar-tn.js": 242,
-	"./ar.js": 236,
-	"./az": 243,
-	"./az.js": 243,
-	"./be": 244,
-	"./be.js": 244,
-	"./bg": 245,
-	"./bg.js": 245,
-	"./bm": 246,
-	"./bm.js": 246,
-	"./bn": 247,
-	"./bn.js": 247,
-	"./bo": 248,
-	"./bo.js": 248,
-	"./br": 249,
-	"./br.js": 249,
-	"./bs": 250,
-	"./bs.js": 250,
-	"./ca": 251,
-	"./ca.js": 251,
-	"./cs": 252,
-	"./cs.js": 252,
-	"./cv": 253,
-	"./cv.js": 253,
-	"./cy": 254,
-	"./cy.js": 254,
-	"./da": 255,
-	"./da.js": 255,
-	"./de": 256,
-	"./de-at": 257,
-	"./de-at.js": 257,
-	"./de-ch": 258,
-	"./de-ch.js": 258,
-	"./de.js": 256,
-	"./dv": 259,
-	"./dv.js": 259,
-	"./el": 260,
-	"./el.js": 260,
-	"./en-SG": 261,
-	"./en-SG.js": 261,
-	"./en-au": 262,
-	"./en-au.js": 262,
-	"./en-ca": 263,
-	"./en-ca.js": 263,
-	"./en-gb": 264,
-	"./en-gb.js": 264,
-	"./en-ie": 265,
-	"./en-ie.js": 265,
-	"./en-il": 266,
-	"./en-il.js": 266,
-	"./en-nz": 267,
-	"./en-nz.js": 267,
-	"./eo": 268,
-	"./eo.js": 268,
-	"./es": 269,
-	"./es-do": 270,
-	"./es-do.js": 270,
-	"./es-us": 271,
-	"./es-us.js": 271,
-	"./es.js": 269,
-	"./et": 272,
-	"./et.js": 272,
-	"./eu": 273,
-	"./eu.js": 273,
-	"./fa": 274,
-	"./fa.js": 274,
-	"./fi": 275,
-	"./fi.js": 275,
-	"./fo": 276,
-	"./fo.js": 276,
-	"./fr": 277,
-	"./fr-ca": 278,
-	"./fr-ca.js": 278,
-	"./fr-ch": 279,
-	"./fr-ch.js": 279,
-	"./fr.js": 277,
-	"./fy": 280,
-	"./fy.js": 280,
-	"./ga": 281,
-	"./ga.js": 281,
-	"./gd": 282,
-	"./gd.js": 282,
-	"./gl": 283,
-	"./gl.js": 283,
-	"./gom-latn": 284,
-	"./gom-latn.js": 284,
-	"./gu": 285,
-	"./gu.js": 285,
-	"./he": 286,
-	"./he.js": 286,
-	"./hi": 287,
-	"./hi.js": 287,
-	"./hr": 288,
-	"./hr.js": 288,
-	"./hu": 289,
-	"./hu.js": 289,
-	"./hy-am": 290,
-	"./hy-am.js": 290,
-	"./id": 291,
-	"./id.js": 291,
-	"./is": 292,
-	"./is.js": 292,
-	"./it": 293,
-	"./it-ch": 294,
-	"./it-ch.js": 294,
-	"./it.js": 293,
-	"./ja": 295,
-	"./ja.js": 295,
-	"./jv": 296,
-	"./jv.js": 296,
-	"./ka": 297,
-	"./ka.js": 297,
-	"./kk": 298,
-	"./kk.js": 298,
-	"./km": 299,
-	"./km.js": 299,
-	"./kn": 300,
-	"./kn.js": 300,
-	"./ko": 301,
-	"./ko.js": 301,
-	"./ku": 302,
-	"./ku.js": 302,
-	"./ky": 303,
-	"./ky.js": 303,
-	"./lb": 304,
-	"./lb.js": 304,
-	"./lo": 305,
-	"./lo.js": 305,
-	"./lt": 306,
-	"./lt.js": 306,
-	"./lv": 307,
-	"./lv.js": 307,
-	"./me": 308,
-	"./me.js": 308,
-	"./mi": 309,
-	"./mi.js": 309,
-	"./mk": 310,
-	"./mk.js": 310,
-	"./ml": 311,
-	"./ml.js": 311,
-	"./mn": 312,
-	"./mn.js": 312,
-	"./mr": 313,
-	"./mr.js": 313,
-	"./ms": 314,
-	"./ms-my": 315,
-	"./ms-my.js": 315,
-	"./ms.js": 314,
-	"./mt": 316,
-	"./mt.js": 316,
-	"./my": 317,
-	"./my.js": 317,
-	"./nb": 318,
-	"./nb.js": 318,
-	"./ne": 319,
-	"./ne.js": 319,
-	"./nl": 320,
-	"./nl-be": 321,
-	"./nl-be.js": 321,
-	"./nl.js": 320,
-	"./nn": 322,
-	"./nn.js": 322,
-	"./pa-in": 323,
-	"./pa-in.js": 323,
-	"./pl": 324,
-	"./pl.js": 324,
-	"./pt": 325,
-	"./pt-br": 326,
-	"./pt-br.js": 326,
-	"./pt.js": 325,
-	"./ro": 327,
-	"./ro.js": 327,
-	"./ru": 328,
-	"./ru.js": 328,
-	"./sd": 329,
-	"./sd.js": 329,
-	"./se": 330,
-	"./se.js": 330,
-	"./si": 331,
-	"./si.js": 331,
-	"./sk": 332,
-	"./sk.js": 332,
-	"./sl": 333,
-	"./sl.js": 333,
-	"./sq": 334,
-	"./sq.js": 334,
-	"./sr": 335,
-	"./sr-cyrl": 336,
-	"./sr-cyrl.js": 336,
-	"./sr.js": 335,
-	"./ss": 337,
-	"./ss.js": 337,
-	"./sv": 338,
-	"./sv.js": 338,
-	"./sw": 339,
-	"./sw.js": 339,
-	"./ta": 340,
-	"./ta.js": 340,
-	"./te": 341,
-	"./te.js": 341,
-	"./tet": 342,
-	"./tet.js": 342,
-	"./tg": 343,
-	"./tg.js": 343,
-	"./th": 344,
-	"./th.js": 344,
-	"./tl-ph": 345,
-	"./tl-ph.js": 345,
-	"./tlh": 346,
-	"./tlh.js": 346,
-	"./tr": 347,
-	"./tr.js": 347,
-	"./tzl": 348,
-	"./tzl.js": 348,
-	"./tzm": 349,
-	"./tzm-latn": 350,
-	"./tzm-latn.js": 350,
-	"./tzm.js": 349,
-	"./ug-cn": 351,
-	"./ug-cn.js": 351,
-	"./uk": 352,
-	"./uk.js": 352,
-	"./ur": 353,
-	"./ur.js": 353,
-	"./uz": 354,
-	"./uz-latn": 355,
-	"./uz-latn.js": 355,
-	"./uz.js": 354,
-	"./vi": 356,
-	"./vi.js": 356,
-	"./x-pseudo": 357,
-	"./x-pseudo.js": 357,
-	"./yo": 358,
-	"./yo.js": 358,
-	"./zh-cn": 359,
-	"./zh-cn.js": 359,
-	"./zh-hk": 360,
-	"./zh-hk.js": 360,
-	"./zh-tw": 361,
-	"./zh-tw.js": 361
+	"./af": 214,
+	"./af.js": 214,
+	"./ar": 215,
+	"./ar-dz": 216,
+	"./ar-dz.js": 216,
+	"./ar-kw": 217,
+	"./ar-kw.js": 217,
+	"./ar-ly": 218,
+	"./ar-ly.js": 218,
+	"./ar-ma": 219,
+	"./ar-ma.js": 219,
+	"./ar-sa": 220,
+	"./ar-sa.js": 220,
+	"./ar-tn": 221,
+	"./ar-tn.js": 221,
+	"./ar.js": 215,
+	"./az": 222,
+	"./az.js": 222,
+	"./be": 223,
+	"./be.js": 223,
+	"./bg": 224,
+	"./bg.js": 224,
+	"./bm": 225,
+	"./bm.js": 225,
+	"./bn": 226,
+	"./bn.js": 226,
+	"./bo": 227,
+	"./bo.js": 227,
+	"./br": 228,
+	"./br.js": 228,
+	"./bs": 229,
+	"./bs.js": 229,
+	"./ca": 230,
+	"./ca.js": 230,
+	"./cs": 231,
+	"./cs.js": 231,
+	"./cv": 232,
+	"./cv.js": 232,
+	"./cy": 233,
+	"./cy.js": 233,
+	"./da": 234,
+	"./da.js": 234,
+	"./de": 235,
+	"./de-at": 236,
+	"./de-at.js": 236,
+	"./de-ch": 237,
+	"./de-ch.js": 237,
+	"./de.js": 235,
+	"./dv": 238,
+	"./dv.js": 238,
+	"./el": 239,
+	"./el.js": 239,
+	"./en-SG": 240,
+	"./en-SG.js": 240,
+	"./en-au": 241,
+	"./en-au.js": 241,
+	"./en-ca": 242,
+	"./en-ca.js": 242,
+	"./en-gb": 243,
+	"./en-gb.js": 243,
+	"./en-ie": 244,
+	"./en-ie.js": 244,
+	"./en-il": 245,
+	"./en-il.js": 245,
+	"./en-nz": 246,
+	"./en-nz.js": 246,
+	"./eo": 247,
+	"./eo.js": 247,
+	"./es": 248,
+	"./es-do": 249,
+	"./es-do.js": 249,
+	"./es-us": 250,
+	"./es-us.js": 250,
+	"./es.js": 248,
+	"./et": 251,
+	"./et.js": 251,
+	"./eu": 252,
+	"./eu.js": 252,
+	"./fa": 253,
+	"./fa.js": 253,
+	"./fi": 254,
+	"./fi.js": 254,
+	"./fo": 255,
+	"./fo.js": 255,
+	"./fr": 256,
+	"./fr-ca": 257,
+	"./fr-ca.js": 257,
+	"./fr-ch": 258,
+	"./fr-ch.js": 258,
+	"./fr.js": 256,
+	"./fy": 259,
+	"./fy.js": 259,
+	"./ga": 260,
+	"./ga.js": 260,
+	"./gd": 261,
+	"./gd.js": 261,
+	"./gl": 262,
+	"./gl.js": 262,
+	"./gom-latn": 263,
+	"./gom-latn.js": 263,
+	"./gu": 264,
+	"./gu.js": 264,
+	"./he": 265,
+	"./he.js": 265,
+	"./hi": 266,
+	"./hi.js": 266,
+	"./hr": 267,
+	"./hr.js": 267,
+	"./hu": 268,
+	"./hu.js": 268,
+	"./hy-am": 269,
+	"./hy-am.js": 269,
+	"./id": 270,
+	"./id.js": 270,
+	"./is": 271,
+	"./is.js": 271,
+	"./it": 272,
+	"./it-ch": 273,
+	"./it-ch.js": 273,
+	"./it.js": 272,
+	"./ja": 274,
+	"./ja.js": 274,
+	"./jv": 275,
+	"./jv.js": 275,
+	"./ka": 276,
+	"./ka.js": 276,
+	"./kk": 277,
+	"./kk.js": 277,
+	"./km": 278,
+	"./km.js": 278,
+	"./kn": 279,
+	"./kn.js": 279,
+	"./ko": 280,
+	"./ko.js": 280,
+	"./ku": 281,
+	"./ku.js": 281,
+	"./ky": 282,
+	"./ky.js": 282,
+	"./lb": 283,
+	"./lb.js": 283,
+	"./lo": 284,
+	"./lo.js": 284,
+	"./lt": 285,
+	"./lt.js": 285,
+	"./lv": 286,
+	"./lv.js": 286,
+	"./me": 287,
+	"./me.js": 287,
+	"./mi": 288,
+	"./mi.js": 288,
+	"./mk": 289,
+	"./mk.js": 289,
+	"./ml": 290,
+	"./ml.js": 290,
+	"./mn": 291,
+	"./mn.js": 291,
+	"./mr": 292,
+	"./mr.js": 292,
+	"./ms": 293,
+	"./ms-my": 294,
+	"./ms-my.js": 294,
+	"./ms.js": 293,
+	"./mt": 295,
+	"./mt.js": 295,
+	"./my": 296,
+	"./my.js": 296,
+	"./nb": 297,
+	"./nb.js": 297,
+	"./ne": 298,
+	"./ne.js": 298,
+	"./nl": 299,
+	"./nl-be": 300,
+	"./nl-be.js": 300,
+	"./nl.js": 299,
+	"./nn": 301,
+	"./nn.js": 301,
+	"./pa-in": 302,
+	"./pa-in.js": 302,
+	"./pl": 303,
+	"./pl.js": 303,
+	"./pt": 304,
+	"./pt-br": 305,
+	"./pt-br.js": 305,
+	"./pt.js": 304,
+	"./ro": 306,
+	"./ro.js": 306,
+	"./ru": 307,
+	"./ru.js": 307,
+	"./sd": 308,
+	"./sd.js": 308,
+	"./se": 309,
+	"./se.js": 309,
+	"./si": 310,
+	"./si.js": 310,
+	"./sk": 311,
+	"./sk.js": 311,
+	"./sl": 312,
+	"./sl.js": 312,
+	"./sq": 313,
+	"./sq.js": 313,
+	"./sr": 314,
+	"./sr-cyrl": 315,
+	"./sr-cyrl.js": 315,
+	"./sr.js": 314,
+	"./ss": 316,
+	"./ss.js": 316,
+	"./sv": 317,
+	"./sv.js": 317,
+	"./sw": 318,
+	"./sw.js": 318,
+	"./ta": 319,
+	"./ta.js": 319,
+	"./te": 320,
+	"./te.js": 320,
+	"./tet": 321,
+	"./tet.js": 321,
+	"./tg": 322,
+	"./tg.js": 322,
+	"./th": 323,
+	"./th.js": 323,
+	"./tl-ph": 324,
+	"./tl-ph.js": 324,
+	"./tlh": 325,
+	"./tlh.js": 325,
+	"./tr": 326,
+	"./tr.js": 326,
+	"./tzl": 327,
+	"./tzl.js": 327,
+	"./tzm": 328,
+	"./tzm-latn": 329,
+	"./tzm-latn.js": 329,
+	"./tzm.js": 328,
+	"./ug-cn": 330,
+	"./ug-cn.js": 330,
+	"./uk": 331,
+	"./uk.js": 331,
+	"./ur": 332,
+	"./ur.js": 332,
+	"./uz": 333,
+	"./uz-latn": 334,
+	"./uz-latn.js": 334,
+	"./uz.js": 333,
+	"./vi": 335,
+	"./vi.js": 335,
+	"./x-pseudo": 336,
+	"./x-pseudo.js": 336,
+	"./yo": 337,
+	"./yo.js": 337,
+	"./zh-cn": 338,
+	"./zh-cn.js": 338,
+	"./zh-hk": 339,
+	"./zh-hk.js": 339,
+	"./zh-tw": 340,
+	"./zh-tw.js": 340
 };
 
 
@@ -1205,22 +736,22 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 578;
+webpackContext.id = 539;
 
 /***/ }),
 
-/***/ 66:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // import fg = require('fast-glob');
-var dirTree = __webpack_require__(509);
-var fs = __webpack_require__(33);
-var write = __webpack_require__(510);
-var rimraf = __webpack_require__(513);
-var remote = __webpack_require__(113).remote;
+var dirTree = __webpack_require__(479);
+var fs = __webpack_require__(135);
+var write = __webpack_require__(480);
+var rimraf = __webpack_require__(481);
+var remote = __webpack_require__(108).remote;
 /**
  * @file 文件工具
  */
@@ -1349,7 +880,7 @@ exports.default = {
      * 选择系统路径
      */
     selectPath: function () {
-        var dialog = __webpack_require__(113).remote.dialog;
+        var dialog = __webpack_require__(108).remote.dialog;
         return dialog.showOpenDialog({ properties: ['openDirectory'], buttonLabel: '选择' });
     }
 };
@@ -1357,7 +888,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ 844:
+/***/ 805:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1433,18 +964,18 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var antd_1 = __webpack_require__(109);
-var console_feed_1 = __webpack_require__(845);
-var axios_1 = __webpack_require__(906);
-var launch_1 = __webpack_require__(924);
-var util_1 = __webpack_require__(90);
-var file_1 = __webpack_require__(66);
-__webpack_require__(929);
+var antd_1 = __webpack_require__(105);
+var console_feed_1 = __webpack_require__(806);
+var axios_1 = __webpack_require__(867);
+var launch_1 = __webpack_require__(885);
+var util_1 = __webpack_require__(87);
+__webpack_require__(889);
 /**
  * @file 项目选择组件
  */
-var fg = __webpack_require__(931);
-var fs = __webpack_require__(33);
+var fg = __webpack_require__(891);
+var fs = __webpack_require__(135);
+var webpack = __webpack_require__(892);
 var mfconsole;
 var Operate = /** @class */ (function (_super) {
     __extends(Operate, _super);
@@ -1564,28 +1095,6 @@ var Operate = /** @class */ (function (_super) {
         mfconsole = console_feed_1.Hook(Object.assign({}, window.console), function (log) { return _this.setState({ logs: __spread(_this.state.logs, [log]) }); }, false);
     };
     /**
-     * 本地编译
-     */
-    Operate.prototype.build = function () {
-        var appPath = util_1.default.getAppPath();
-        var project = this.props.project;
-        var data = {
-            name: project.name,
-            context: appPath + "/temp",
-            output: appPath + "/assets/pkg"
-        };
-        var temp = appPath + "/config/temp.config.js";
-        // clean mfconsole
-        this.state.logs = [];
-        mfconsole.warn('start to build ...');
-        var code = file_1.default.readFile(appPath + "/config/build.tpl");
-        file_1.default.writeFile(temp, code.replace(/<%([^%>]*)%>/g, function ($, $1) { return data[$1]; }));
-        util_1.default.shell("\n      cd " + appPath + "\n      mkdir -p temp\n      cp -r " + project.path + "/src/* ./temp\n      " + appPath + "/node_modules/webpack/bin/webpack.js --config " + temp + "\n      rm -rf ./temp " + temp + "\n      ")
-            .then(function (data) { return mfconsole.info(data); })
-            .catch(function (e) { return mfconsole.error(e); });
-        // TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容
-    };
-    /**
      * 模拟 sleep
      */
     Operate.prototype.lazy = function (time) {
@@ -1597,6 +1106,47 @@ var Operate = /** @class */ (function (_super) {
                 clearTimeout(tid);
                 resolve();
             }, time);
+        });
+    };
+    /**
+     * 本地编译
+     * TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容
+     */
+    Operate.prototype.build = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var project, data, opts, compiler;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        project = this.props.project;
+                        data = {
+                            name: project.name,
+                            entry: project.path + "/src/pkg.js",
+                            output: util_1.default.getAppPath() + "/assets/pkg"
+                        };
+                        // clean mfconsole
+                        this.state.logs = [];
+                        mfconsole.warn('start to build ...');
+                        return [4 /*yield*/, this.lazy(100)];
+                    case 1:
+                        _a.sent();
+                        opts = __webpack_require__(893)(data, webpack);
+                        compiler = webpack(opts);
+                        compiler.run(function (err, stats) {
+                            if (err) {
+                                mfconsole.error(err);
+                            }
+                            else if (stats.hasErrors()) {
+                                var data_1 = stats.toJson('minimal');
+                                mfconsole.error(data_1.errors[0]);
+                            }
+                            else {
+                                mfconsole.info(stats.toString());
+                            }
+                        });
+                        return [2 /*return*/];
+                }
+            });
         });
     };
     Operate.prototype.render = function () {
@@ -1614,7 +1164,7 @@ var Operate = /** @class */ (function (_super) {
             React.createElement(antd_1.Modal, { className: 'mf-build-modal', visible: vdeploy, maskClosable: false, footer: null, title: project.deploy, onCancel: this.closeDeployHandle },
                 React.createElement("div", null,
                     React.createElement(console_feed_1.Console, { logs: logs, variant: 'dark' }))),
-            React.createElement(antd_1.Modal, { className: 'mf-build-modal', visible: vbuild, maskClosable: false, footer: null, title: util_1.default.getAppPath() + '/assets/pkg', onCancel: this.closeBuildHandle },
+            React.createElement(antd_1.Modal, { className: 'mf-build-modal', visible: vbuild, maskClosable: false, footer: null, title: util_1.default.getAppPath() + '/assets/pkg', width: 800, onCancel: this.closeBuildHandle },
                 React.createElement("div", null,
                     React.createElement(console_feed_1.Console, { logs: logs, variant: 'dark' })))));
     };
@@ -1625,7 +1175,7 @@ exports.default = Operate;
 
 /***/ }),
 
-/***/ 90:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1634,8 +1184,8 @@ exports.default = Operate;
  * @file util tools
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var CMD = __webpack_require__(925);
-var remote = __webpack_require__(113).remote;
+var CMD = __webpack_require__(886);
+var remote = __webpack_require__(108).remote;
 var FileType = {
     js: 'JavaScript',
     ts: 'TypeScript',
@@ -1676,7 +1226,7 @@ exports.default = {
         return CodeType[ext];
     },
     getLocalWin: function () {
-        return __webpack_require__(113).remote.getCurrentWindow();
+        return __webpack_require__(108).remote.getCurrentWindow();
     },
     /**
      * 执行 cli 命令
@@ -1707,7 +1257,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ 924:
+/***/ 885:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1738,13 +1288,13 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_redux_1 = __webpack_require__(137);
-var redux_1 = __webpack_require__(110);
-var antd_1 = __webpack_require__(109);
-var action_1 = __webpack_require__(142);
-var file_1 = __webpack_require__(66);
-var util_1 = __webpack_require__(90);
-__webpack_require__(927);
+var react_redux_1 = __webpack_require__(129);
+var redux_1 = __webpack_require__(106);
+var antd_1 = __webpack_require__(105);
+var action_1 = __webpack_require__(134);
+var file_1 = __webpack_require__(79);
+var util_1 = __webpack_require__(87);
+__webpack_require__(887);
 var itemLayout = {
     labelCol: {
         xs: { span: 24 },
@@ -1864,18 +1414,18 @@ exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(For
 
 /***/ }),
 
-/***/ 926:
+/***/ 886:
 /***/ (function(module, exports) {
 
-module.exports = require("child_process");
+module.exports = require("node-cmd");
 
 /***/ }),
 
-/***/ 927:
+/***/ 887:
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(928);
+var api = __webpack_require__(43);
+            var content = __webpack_require__(888);
 
             content = content.__esModule ? content.default : content;
 
@@ -1898,11 +1448,11 @@ module.exports = exported;
 
 /***/ }),
 
-/***/ 928:
+/***/ 888:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".mf-launch {\n  height: 400px;\n  font-family: \"Comic Sans MS\", Monaco, Microsoft YaHei, PingFang SC, STHeiti, SimHei, sans-serif;\n}\n.mf-launch .ant-form-item label {\n  font-weight: 700;\n}\n.mf-launch .mf-launch-layout {\n  justify-content: center;\n}\n.mf-launch h2 {\n  text-align: center;\n  color: #464646;\n}\n.mf-launch h2 img {\n  width: 30px;\n  height: 30px;\n  margin-right: 10px;\n  vertical-align: bottom;\n}\n.mf-launch .mf-form {\n  margin-top: 50px;\n  text-align: center;\n}\n.mf-launch .mf-form .mf-form-cancel {\n  margin-right: 10px;\n}\n.mf-launch .mf-form .mf-form-save {\n  margin-top: 10px;\n}\n.mf-launch .mf-form .ant-form-explain {\n  text-align: left;\n}\n.ant-modal-body {\n  font-family: \"Comic Sans MS\", Monaco, Microsoft YaHei, PingFang SC, STHeiti, SimHei, sans-serif;\n}\n", ""]);
@@ -1912,11 +1462,11 @@ module.exports = exports;
 
 /***/ }),
 
-/***/ 929:
+/***/ 889:
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(930);
+var api = __webpack_require__(43);
+            var content = __webpack_require__(890);
 
             content = content.__esModule ? content.default : content;
 
@@ -1939,11 +1489,11 @@ module.exports = exported;
 
 /***/ }),
 
-/***/ 930:
+/***/ 890:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".mf-select {\n  display: inline-flex;\n  align-items: center;\n  font-size: 14px;\n}\n.mf-select label {\n  margin-right: 10px;\n}\n.mf-select em {\n  margin-left: 5px;\n  color: red;\n}\n.mf-launch-modal {\n  top: 0 !important;\n}\n.mf-launch-modal .ant-modal-body {\n  padding: 0;\n}\n.mf-build-modal .ant-modal-header {\n  padding: 10px;\n  background: #1890ff;\n  border-bottom: none;\n}\n.mf-build-modal .ant-modal-header .ant-modal-title {\n  color: #fff;\n}\n.mf-build-modal .ant-modal-body {\n  min-height: 200px;\n  padding: 0;\n  background: #242424;\n}\n.mf-build-modal .ant-modal-body * {\n  font-size: 14px !important;\n}\n.mf-build-modal .ant-modal-body .css-5l7c0w,\n.mf-build-modal .ant-modal-body .css-17pf22k,\n.mf-build-modal .ant-modal-body .css-lbd0fj {\n  height: 25px;\n}\n.mf-build-modal .ant-modal-close-x {\n  height: 43px;\n  line-height: 43px;\n}\n.mf-build-modal .ant-modal-close-x .ant-modal-close-icon {\n  color: #fff;\n}\n", ""]);
@@ -1953,7 +1503,85 @@ module.exports = exports;
 
 /***/ }),
 
-/***/ 981:
+/***/ 891:
+/***/ (function(module, exports) {
+
+module.exports = require("fast-glob");
+
+/***/ }),
+
+/***/ 892:
+/***/ (function(module, exports) {
+
+module.exports = require("webpack");
+
+/***/ }),
+
+/***/ 893:
+/***/ (function(module, exports) {
+
+/**
+ * @file create webpack config
+ */
+
+module.exports = function(data, webpack) {
+  return {
+    mode: 'production',
+    devtool: false,
+    entry: {
+      [data.name]: data.entry
+    },
+    output: {
+      libraryTarget: 'commonjs',
+      filename: '[name].js',
+      // chunk 包加 hash [name].[chunkhash].js
+      chunkFilename: '[name].js',
+      path: data.output
+    },
+    module: {
+      noParse: /moment/,
+      rules: [
+        {
+          test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/,
+          use: 'url-loader?limit=30000&name=[name].[ext]'
+        },
+        {
+          test: /\.(js|jsx)?/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [['@babel/preset-env', { modules: false }], '@babel/preset-react'],
+              plugins: ['@babel/plugin-proposal-class-properties']
+            }
+          },
+          exclude: /dist|node_modules/
+        },
+        {
+          test: /\.less$/,
+          exclude: /dist|node_modules/,
+          use: ['style-loader', 'css-loader', 'less-loader']
+        }
+      ]
+    },
+    externals: {
+      react: 'react',
+      'react-dom': 'react-dom',
+      'mf-enhance': 'mf-enhance',
+      antd: 'antd'
+    },
+    resolve: {
+      extensions: ['.jsx', '.js', '.json']
+    },
+    plugins: [
+      new webpack.optimize.ModuleConcatenationPlugin()
+    ]
+  };
+}
+
+
+/***/ }),
+
+/***/ 894:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1973,9 +1601,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var vscode_icons_js_1 = __webpack_require__(982);
-var util_1 = __webpack_require__(90);
-__webpack_require__(988);
+var vscode_icons_js_1 = __webpack_require__(895);
+var util_1 = __webpack_require__(87);
+__webpack_require__(901);
 /**
  * @file file type icon
  */
@@ -1998,11 +1626,11 @@ exports.default = FileIcon;
 
 /***/ }),
 
-/***/ 988:
+/***/ 901:
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(989);
+var api = __webpack_require__(43);
+            var content = __webpack_require__(902);
 
             content = content.__esModule ? content.default : content;
 
@@ -2025,11 +1653,11 @@ module.exports = exported;
 
 /***/ }),
 
-/***/ 989:
+/***/ 902:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".mf-fileicon img {\n  width: 22px;\n  height: 22px;\n  background-size: cover;\n}\n", ""]);
@@ -2039,7 +1667,7 @@ module.exports = exports;
 
 /***/ }),
 
-/***/ 990:
+/***/ 903:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2059,20 +1687,20 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var fs = __webpack_require__(33);
-var antd_1 = __webpack_require__(109);
-var react_codemirror2_1 = __webpack_require__(991);
-var util_1 = __webpack_require__(90);
-var file_1 = __webpack_require__(66);
-__webpack_require__(992);
-__webpack_require__(994);
-__webpack_require__(996);
-__webpack_require__(997);
-__webpack_require__(998);
+var fs = __webpack_require__(135);
+var antd_1 = __webpack_require__(105);
+var react_codemirror2_1 = __webpack_require__(904);
+var util_1 = __webpack_require__(87);
+var file_1 = __webpack_require__(79);
+__webpack_require__(905);
+__webpack_require__(907);
+__webpack_require__(909);
+__webpack_require__(910);
+__webpack_require__(911);
 /**
  * @file web ide
  */
-var PubSub = __webpack_require__(469);
+var PubSub = __webpack_require__(439);
 var Code = /** @class */ (function (_super) {
     __extends(Code, _super);
     function Code() {
@@ -2166,11 +1794,11 @@ exports.default = Code;
 
 /***/ }),
 
-/***/ 998:
+/***/ 911:
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(999);
+var api = __webpack_require__(43);
+            var content = __webpack_require__(912);
 
             content = content.__esModule ? content.default : content;
 
@@ -2193,14 +1821,462 @@ module.exports = exported;
 
 /***/ }),
 
-/***/ 999:
+/***/ 912:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(46);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".mf-code {\n  position: relative;\n  text-align: left;\n}\n.mf-code .CodeMirror {\n  height: auto;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ 913:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var util_1 = __webpack_require__(87);
+__webpack_require__(914);
+/**
+ * @file 状态栏
+ */
+var PubSub = __webpack_require__(439);
+var Status = /** @class */ (function (_super) {
+    __extends(Status, _super);
+    function Status() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = {
+            codeStatus: 'normal',
+            file: null
+        };
+        return _this;
+    }
+    Status.getDerivedStateFromProps = function (props, state) {
+        return {
+            file: state.file || props.file
+        };
+    };
+    Status.prototype.componentDidMount = function () {
+        var _this = this;
+        // out of react transaction
+        PubSub.subscribe('code-edit', function () {
+            if (_this.state.codeStatus == 'normal') {
+                _this.setState({ codeStatus: 'edit' });
+                console.log(2);
+            }
+        });
+        PubSub.subscribe('code-save', function () { return _this.setState({ codeStatus: 'normal' }); });
+        PubSub.subscribe('code-load', function () { return _this.setState({ codeStatus: 'normal' }); });
+    };
+    Status.prototype.componentWillUnmount = function () {
+        PubSub.clearAllSubscriptions();
+    };
+    Status.prototype.acceptFile = function (file) {
+        this.setState({ file: file });
+    };
+    Status.prototype.render = function () {
+        var project = this.props.project;
+        var _a = this.state, codeStatus = _a.codeStatus, file = _a.file;
+        var type = '--';
+        var path = '--';
+        if (file) {
+            path = file.path;
+            type = util_1.default.getFileType(path);
+        }
+        return (React.createElement("div", { className: 'mf-status' },
+            React.createElement("div", { className: 'mf-status-file' },
+                React.createElement("img", { src: util_1.default.getFilePath('/assets/img/status-logo.svg') }),
+                React.createElement("em", null, project ? project.name : '--'),
+                React.createElement("span", null, path),
+                codeStatus == 'edit' ? React.createElement("span", { className: 'mf-status-todo' }) : null),
+            React.createElement("div", { className: 'mf-status-type' },
+                React.createElement("em", null, "UTF-8"),
+                React.createElement("span", null, type))));
+    };
+    return Status;
+}(React.PureComponent));
+exports.default = Status;
+
+
+/***/ }),
+
+/***/ 914:
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(43);
+            var content = __webpack_require__(915);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(module.i, content, options);
+
+var exported = content.locals ? content.locals : {};
+
+
+
+module.exports = exported;
+
+/***/ }),
+
+/***/ 915:
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".mf-status {\n  position: relative;\n  height: 40px;\n  line-height: 40px;\n  color: #909090;\n}\n.mf-status .mf-status-file {\n  position: absolute;\n  left: 15px;\n}\n.mf-status .mf-status-file img {\n  width: 20px;\n  height: 20px;\n  margin-right: 5px;\n}\n.mf-status .mf-status-file em {\n  margin-right: 20px;\n  font-weight: 700;\n}\n.mf-status .mf-status-type {\n  position: absolute;\n  right: 15px;\n}\n.mf-status .mf-status-type em {\n  margin-right: 20px;\n}\n.mf-status .mf-status-todo {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  margin-left: 10px;\n  vertical-align: -1px;\n  background: #9d9d9d;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ 916:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var react_dom_1 = __webpack_require__(9);
+var antd_1 = __webpack_require__(105);
+var react_redux_1 = __webpack_require__(129);
+var redux_1 = __webpack_require__(106);
+var react_contextmenu_1 = __webpack_require__(926);
+var action_1 = __webpack_require__(134);
+var file_1 = __webpack_require__(79);
+__webpack_require__(917);
+/**
+ * @file context menu
+ */
+var MfMenu = /** @class */ (function (_super) {
+    __extends(MfMenu, _super);
+    function MfMenu() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = {
+            path: null,
+            visible: false,
+            pos: null,
+            action: null
+        };
+        _this.clickHandle = function (elem, data) {
+            console.log(data);
+        };
+        /**
+         * 添加文件
+         */
+        _this.addHandle = function (elem, data) {
+            _this.setState({ visible: true, action: data.type });
+        };
+        _this.showModal = function () {
+            _this.setState({ visible: true });
+        };
+        _this.hideModal = function () {
+            _this.setState({ visible: false, action: null });
+        };
+        /**
+         * 处理 add 指令
+         */
+        _this.doAddHandle = function () {
+            var _a = _this.state, path = _a.path, action = _a.action;
+            var node = react_dom_1.findDOMNode(_this.refs.finput);
+            var name = node.value.replace(/\s/g, '');
+            if (!name) {
+                return _this.hideModal();
+            }
+            var flag = action == 'add1' ? 1 : 2;
+            // 如果点击的是文件，修复 path
+            if (/[^.]+\.[a-zA-Z]+/.test(path)) {
+                path = path.replace(/[^./]+\..+/, '');
+            }
+            path = path.replace('/$', '');
+            var res = file_1.default.mknew(path + "/" + name, flag);
+            if (res.code == -1) {
+                antd_1.Modal.error({ title: res.msg });
+            }
+            else {
+                _this.refreshExplore();
+                _this.hideModal();
+            }
+        };
+        /**
+         * 删除文件 & 目录
+         */
+        _this.delHandle = function () {
+            var path = _this.state.path;
+            var res = file_1.default.rm(path);
+            if (res.code == -1) {
+                antd_1.Modal.error({ title: res.msg });
+            }
+            else {
+                _this.refreshExplore();
+            }
+        };
+        /**
+         * 前插右键事件
+         */
+        _this.onContextMenu = function (e) {
+            var state = _this.state;
+            var elem = e.target;
+            var path = elem.getAttribute('data-path');
+            state.path = path;
+            state.pos = { left: e.clientX, top: e.clientY };
+            if (!path) {
+                e.stopPropagation();
+            }
+        };
+        return _this;
+    }
+    MfMenu.prototype.refreshExplore = function () {
+        var _a = this.props, initFileAction = _a.initFileAction, project = _a.project;
+        initFileAction(project.path);
+    };
+    MfMenu.prototype.render = function () {
+        var children = this.props.children;
+        var _a = this.state, pos = _a.pos, visible = _a.visible;
+        var parent = React.cloneElement(children, {
+            onContextMenu: this.onContextMenu
+        });
+        return (React.createElement("div", { className: 'mf-contextmenu' },
+            React.createElement(react_contextmenu_1.ContextMenuTrigger, { id: 'mf-contextmenu-id' }, parent),
+            React.createElement(react_contextmenu_1.ContextMenu, { id: 'mf-contextmenu-id' },
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'finder' }, onClick: this.clickHandle, disabled: true }, "\u5728 Finder \u4E2D\u663E\u793A"),
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'code' }, onClick: this.clickHandle }, "\u5728\u7F16\u8F91\u5668\u4E2D\u6253\u5F00"),
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'iterm' }, onClick: this.clickHandle, disabled: true }, "\u5728\u7EC8\u7AEF\u4E2D\u6253\u5F00"),
+                React.createElement(react_contextmenu_1.MenuItem, { divider: true }),
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'add1' }, onClick: this.addHandle }, "\u65B0\u5EFA\u6587\u4EF6"),
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'add2' }, onClick: this.addHandle }, "\u65B0\u5EFA\u76EE\u5F55"),
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'rename' }, onClick: this.clickHandle, disabled: true }, "\u91CD\u547D\u540D"),
+                React.createElement(react_contextmenu_1.MenuItem, { divider: true }),
+                React.createElement(react_contextmenu_1.MenuItem, { data: { type: 'del' }, onClick: this.delHandle }, "\u5220\u9664")),
+            React.createElement(antd_1.Modal, { className: 'mf-filemodal', style: pos, closable: false, visible: visible, onOk: this.doAddHandle, onCancel: this.hideModal, mask: false },
+                React.createElement(antd_1.Input, { ref: 'finput', autoFocus: true }))));
+    };
+    return MfMenu;
+}(React.Component));
+var mapStateToProps = function (state) {
+    return {
+        project: state.project
+    };
+};
+var mapDispatchToProps = function (dispatch) {
+    return {
+        initFileAction: redux_1.bindActionCreators(action_1.default.initFile, dispatch)
+    };
+};
+exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(MfMenu);
+
+
+/***/ }),
+
+/***/ 917:
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(43);
+            var content = __webpack_require__(918);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(module.i, content, options);
+
+var exported = content.locals ? content.locals : {};
+
+
+
+module.exports = exported;
+
+/***/ }),
+
+/***/ 918:
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "/** context-menu style */\n.mf-contextmenu .react-contextmenu {\n  min-width: 160px;\n  padding: 5px 0;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 0.25rem;\n  margin: 2px 0 0;\n  font-size: 12px;\n  text-align: left;\n  background-color: #d0d0d0;\n  background-clip: padding-box;\n  color: #373a3c;\n  outline: none;\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 250ms ease !important;\n}\n.mf-contextmenu .react-contextmenu.react-contextmenu--visible {\n  opacity: 1;\n  pointer-events: auto;\n  z-index: 9999;\n}\n.mf-contextmenu .react-contextmenu-item {\n  padding: 3px 20px;\n  border: 0;\n  line-height: 1.5;\n  font-weight: 400;\n  text-align: inherit;\n  background: 0 0;\n  color: #373a3c;\n  cursor: pointer;\n  white-space: nowrap;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--active,\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--selected {\n  color: #fff;\n  background-color: #0a8ff5;\n  border-color: #0a8ff5;\n  text-decoration: none;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--disabled,\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-item--disabled:hover {\n  background-color: transparent;\n  border-color: rgba(0, 0, 0, 0.15);\n  color: #878a8c;\n}\n.mf-contextmenu .react-contextmenu-item--divider {\n  padding: 2px 0;\n  margin-bottom: 3px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.15);\n  cursor: inherit;\n}\n.mf-contextmenu .react-contextmenu-item--divider:hover {\n  background-color: transparent;\n  border-color: rgba(0, 0, 0, 0.15);\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-submenu {\n  padding: 0;\n}\n.mf-contextmenu .react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after {\n  content: '▶';\n  display: inline-block;\n  position: absolute;\n  right: 7px;\n}\n.mf-contextmenu .example-multiple-targets::after {\n  content: attr(data-count);\n  display: block;\n}\n.mf-filemodal {\n  width: 200px !important;\n  margin: 0 !important;\n}\n.mf-filemodal .ant-modal-body {\n  padding: 10px;\n}\n.mf-filemodal .ant-modal-footer {\n  padding: 10px;\n}\n.mf-filemodal .ant-btn {\n  font-size: 12px;\n  line-height: 28px;\n  height: 28px;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ 919:
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(43);
+            var content = __webpack_require__(920);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(module.i, content, options);
+
+var exported = content.locals ? content.locals : {};
+
+
+
+module.exports = exported;
+
+/***/ }),
+
+/***/ 920:
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "/** home console */\n.mf-home {\n  height: 100vh;\n}\n.mf-home .ant-layout-footer {\n  height: 60px;\n}\n.mf-home .ant-layout-sider {\n  padding-top: 5px;\n  background: #272727;\n  -webkit-user-select: none;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper {\n  padding: 0 8px 0 5px;\n  color: #fff;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {\n  background: #444;\n  color: #e2c08d;\n}\n.mf-home .ant-layout-sider .ant-tree li .ant-tree-node-content-wrapper:hover {\n  background: #444;\n}\n.mf-home .ant-layout-sider .ant-tree li span.ant-tree-iconEle {\n  margin-right: 5px;\n}\n.mf-home .ant-layout-content {\n  padding-top: 10px;\n  background: #263238;\n  color: #fff;\n}\n.mf-home .mf-info {\n  padding: 10px 0;\n  font-weight: 600;\n  font-size: 16px;\n  text-align: center;\n}\n.mf-home .mf-info button {\n  margin-left: 10px;\n  font-size: 12px;\n}\n.mf-home .mf-filelist {\n  position: relative;\n  min-height: 400px;\n  text-align: left;\n}\n.mf-home .mf-filelist .anticon-caret-down {\n  color: #fff;\n}\n.mf-home .mf-footer {\n  padding: 0;\n  height: 40px;\n  background: #202020;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ 921:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+__webpack_require__(922);
+/**
+ * @file 错误边界
+ */
+var ErrorBoundary = /** @class */ (function (_super) {
+    __extends(ErrorBoundary, _super);
+    function ErrorBoundary() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = { hasError: false, e: null };
+        return _this;
+    }
+    ErrorBoundary.getDerivedStateFromError = function (e) {
+        return { hasError: true, e: e };
+    };
+    ErrorBoundary.prototype.render = function () {
+        var children = this.props.children;
+        var _a = this.state, hasError = _a.hasError, e = _a.e;
+        return hasError ? (React.createElement("div", { className: 'mf-error' },
+            React.createElement("h1", null, "app exception"),
+            React.createElement("p", null, e.message))) : (children);
+    };
+    return ErrorBoundary;
+}(React.Component));
+exports.default = ErrorBoundary;
+
+
+/***/ }),
+
+/***/ 922:
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(43);
+            var content = __webpack_require__(923);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(module.i, content, options);
+
+var exported = content.locals ? content.locals : {};
+
+
+
+module.exports = exported;
+
+/***/ }),
+
+/***/ 923:
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(44);
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".mf-error {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  height: 100vh;\n}\n.mf-error p {\n  font-size: 18px;\n  color: #f41e1e;\n}\n", ""]);
 // Exports
 module.exports = exports;
 

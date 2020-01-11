@@ -4,7 +4,6 @@ import { Hook, Console } from 'console-feed';
 import axios from 'axios';
 import Launch from '../launch/launch';
 import Util from '../util/util';
-import File from '../util/file';
 import './operate.less';
 
 /**
@@ -13,6 +12,7 @@ import './operate.less';
 
 const fg = require('fast-glob');
 const fs = require('fs');
+const webpack = require('webpack');
 let mfconsole;
 
 export default class Operate extends React.Component<any, any> {
@@ -70,45 +70,6 @@ export default class Operate extends React.Component<any, any> {
     this.setState({ vbuild: false });
   };
 
-  /**
-   * 本地编译
-   */
-  build() {
-    const appPath = Util.getAppPath();
-    const { project } = this.props;
-    const data = {
-      name: project.name,
-      context: `${appPath}/temp`,
-      output: `${appPath}/assets/pkg`
-    };
-    const temp = `${appPath}/config/temp.config.js`;
-    // clean mfconsole
-    this.state.logs = [];
-
-    mfconsole.warn('start to build ...');
-    const code = File.readFile(`${appPath}/config/build.tpl`);
-    File.writeFile(
-      temp,
-      code.replace(/<%([^%>]*)%>/g, ($, $1) => data[$1])
-    );
-
-    const webpack = require('webpack');
-    console.log(webpack)
-
-    Util.shell(
-      `
-      cd ${appPath}
-      mkdir -p temp
-      cp -r ${project.path}/src/* ./temp
-      ${appPath}/node_modules/webpack/bin/webpack.js --config ${temp}
-      rm -rf ./temp ${temp}
-      `
-    )
-      .then((data) => mfconsole.info(data))
-      .catch((e) => mfconsole.error(e));
-
-    // TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容
-  }
 
   /**
    * 模拟 sleep
@@ -127,6 +88,37 @@ export default class Operate extends React.Component<any, any> {
   }
 
   /**
+   * 本地编译
+   * TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容
+   */
+  async build() {
+    const { project } = this.props;
+    const data = {
+      name: project.name,
+      entry: `${project.path}/src/pkg.js`,
+      output: `${Util.getAppPath()}/assets/pkg`
+    };
+    // clean mfconsole
+    this.state.logs = [];
+    mfconsole.warn('start to build ...');
+    await this.lazy(100);
+
+    const opts = require('../../config/build')(data, webpack);
+    const compiler = webpack(opts);
+
+    compiler.run(function(err, stats) {
+      if (err) {
+        mfconsole.error(err);
+      } else if (stats.hasErrors()) {
+        const data = stats.toJson('minimal');
+        mfconsole.error(data.errors[0]);
+      } else {
+        mfconsole.info(stats.toString());
+      }
+    });
+  }
+
+  /**
    * 部署到远程服务器
    */
   deploy = () => {
@@ -135,7 +127,7 @@ export default class Operate extends React.Component<any, any> {
 
     axios
       .post(project.deploy, { test: 1 })
-      .then(async (res) => {
+      .then(async res => {
         mfconsole.warn('start to deploy ...');
         await this.lazy(1000);
         mfconsole.log('deploy server connected ...');
@@ -178,7 +170,7 @@ export default class Operate extends React.Component<any, any> {
           this.closeDeployHandle();
         }
       })
-      .catch((e) => {
+      .catch(e => {
         mfconsole.error(e.message);
       });
   };
@@ -223,6 +215,7 @@ export default class Operate extends React.Component<any, any> {
           maskClosable={false}
           footer={null}
           title={Util.getAppPath() + '/assets/pkg'}
+          width={800}
           onCancel={this.closeBuildHandle}>
           <div>
             <Console logs={logs} variant='dark' />

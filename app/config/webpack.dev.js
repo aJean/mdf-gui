@@ -111,6 +111,12 @@ module.exports = {
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
   externals: {
-    webpack: 'commonjs webpack'
+    webpack: 'commonjs webpack',
+    write: 'commonjs write',
+    rimraf: 'commonjs rimraf',
+    yargs: 'commonjs yargs',
+    'node-cmd': 'commonjs node-cmd',
+    'fast-glob': 'commonjs fast-glob',
+    'directory-tree': 'commonjs directory-tree'
   }
 };
