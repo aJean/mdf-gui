@@ -1,5 +1,6 @@
 /**
  * @file create webpack config
+ * TODO: set builtins
  */
 
 const classPlugin = require('@babel/plugin-proposal-class-properties');
