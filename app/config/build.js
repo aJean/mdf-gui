@@ -2,6 +2,10 @@
  * @file create webpack config
  */
 
+const classPlugin = require('@babel/plugin-proposal-class-properties');
+const presetEnv = require('@babel/preset-env');
+const presetReact = require('@babel/preset-react');
+
 module.exports = function(data, webpack) {
   return {
     mode: 'production',
@@ -28,8 +32,8 @@ module.exports = function(data, webpack) {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [['@babel/preset-env', { modules: false }], '@babel/preset-react'],
-              plugins: ['@babel/plugin-proposal-class-properties']
+              presets: [[presetEnv, { modules: false }], presetReact],
+              plugins: [classPlugin]
             }
           },
           exclude: /dist|node_modules/
@@ -51,10 +55,8 @@ module.exports = function(data, webpack) {
       extensions: ['.jsx', '.js', '.json']
     },
     resolveLoader: {
-      modules: [`${data.appPath}/node_modules`],
+      modules: [`${data.appPath}/node_modules`]
     },
-    plugins: [
-      new webpack.optimize.ModuleConcatenationPlugin()
-    ]
+    plugins: [new webpack.optimize.ModuleConcatenationPlugin()]
   };
-}
+};
