@@ -50,6 +50,9 @@ module.exports = function(data, webpack) {
     resolve: {
       extensions: ['.jsx', '.js', '.json']
     },
+    resolveLoader: {
+      modules: [`${data.appPath}/node_modules`],
+    },
     plugins: [
       new webpack.optimize.ModuleConcatenationPlugin()
     ]

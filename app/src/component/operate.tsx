@@ -92,11 +92,13 @@ export default class Operate extends React.Component<any, any> {
    * TODO: git push 打包后文件，并推送到线上，同时更新配置服务器内容
    */
   async build() {
+    const appPath = Util.getAppPath();
     const { project } = this.props;
     const data = {
       name: project.name,
       entry: `${project.path}/src/pkg.js`,
-      output: `${Util.getAppPath()}/assets/pkg`
+      output: `${appPath}/assets/pkg`,
+      appPath
     };
     // clean mfconsole
     this.state.logs = [];
