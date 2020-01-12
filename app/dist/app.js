@@ -568,6 +568,7 @@ module.exports = require("webpack");
 
 /**
  * @file create webpack config
+ * TODO: set builtins
  */
 
 const classPlugin = __webpack_require__(1025);
@@ -620,9 +621,6 @@ module.exports = function(data, webpack) {
       antd: 'antd'
     },
     resolve: {
-      alias: {
-        '@babel/plugin-proposal-class-properties': `${data.appPath}/node_modules/@babel/plugin-proposal-class-properties`
-      },
       extensions: ['.jsx', '.js', '.json']
     },
     resolveLoader: {
