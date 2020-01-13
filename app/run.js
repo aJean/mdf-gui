@@ -11,11 +11,13 @@ global.info = { author: 'aJean', appPath: app.getAppPath() };
 
 let win, tray;
 
-function createWindow() {
+function createWindow(cb) {
   win = new BrowserWindow({
     width: 1600,
     height: 1000,
-    backgroundColor: '#f0f2f5',
+    title: 'mf-gui',
+    backgroundColor: '#263238',
+    show: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -27,6 +29,30 @@ function createWindow() {
     e.preventDefault();
     win.hide();
   });
+
+  win.once('ready-to-show', () => {
+    win.show();
+    cb && cb();
+  });
+}
+
+function createAnimation() {
+  const anim = new BrowserWindow({
+    width: 300,
+    height: 100,
+    title: 'mf-gui',
+    hasShadow: true,
+    vibrancy: 'selection',
+    transparent: true,
+    frame: false,
+    resizable: false,
+    alwaysOnTop: true,
+    show: false
+  });
+
+  anim.once('ready-to-show', () => anim.show());
+  anim.loadURL(`file://${app.getAppPath()}/dist/animate.html`);
+  createWindow(() => anim.close());
 }
 
 /**
@@ -74,7 +100,7 @@ function createDockMenu() {
 }
 
 function registerCmd() {
-  // argv.dev && 
+  // argv.dev &&
   globalShortcut.register('CommandOrControl+Alt+J', function() {
     win && win.webContents.openDevTools();
   });
@@ -90,7 +116,7 @@ function loadDevServer(win, limit = 5) {
         dialog.showErrorBox('dev server', e.message);
         win.destroy();
       } else {
-        setTimeout(deep, 2000);
+        setTimeout(deep, 1000);
       }
     });
   };
@@ -108,7 +134,7 @@ function loadFile(win) {
 app.on('ready', function() {
   createTrayMenu();
   createDockMenu();
-  createWindow();
+  createAnimation();
   registerCmd();
 });
 
