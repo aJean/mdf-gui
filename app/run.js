@@ -36,6 +36,9 @@ function createWindow(cb) {
   });
 }
 
+/**
+ * 启动动画窗口
+ */
 function createAnimation() {
   const anim = new BrowserWindow({
     width: 300,
