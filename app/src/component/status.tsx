@@ -24,7 +24,6 @@ export default class Status extends React.PureComponent<any, any> {
     PubSub.subscribe('code-edit', () => {
       if (this.state.codeStatus == 'normal') {
         this.setState({ codeStatus: 'edit' });
-        console.log(2);
       }
     });
     PubSub.subscribe('code-save', () => this.setState({ codeStatus: 'normal' }));

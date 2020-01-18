@@ -1,13 +1,16 @@
 import * as React from 'react';
 import * as fs from 'fs';
 import { message } from 'antd';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { UnControlled } from 'react-codemirror2';
 import Util from '../util/util';
 import File from '../util/file';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/css/css';
+import 'codemirror/addon/hint/show-hint';
+import 'codemirror/addon/hint/javascript-hint';
+import 'codemirror/addon/hint/show-hint.css';
 import './code.less';
 
 /**
@@ -15,6 +18,7 @@ import './code.less';
  */
 
 const PubSub = require('pubsub-js');
+const CodeMirror = require('codemirror');
 export default class Code extends React.PureComponent<any, any> {
   static getDerivedStateFromProps(props, state) {
     return {
@@ -93,6 +97,26 @@ export default class Code extends React.PureComponent<any, any> {
     this.setState({ file });
   }
 
+  /**
+   * 代码提示
+   */
+  autoComplete = editor => {
+    const cur = editor.getCursor();
+    const token = editor.getTokenAt(cur);
+
+    if (/^[a-zA-Z]+$/.test(token.string)) {
+      editor.showHint({
+        completeSingle: false,
+        hint: function() {
+          if (token.string == 'qy') {
+            return { list: ['qy1', 'qy2'] };
+          }
+          return CodeMirror.hint.javascript(editor);
+        }
+      });
+    }
+  };
+
   render() {
     const { file } = this.state;
     let code = '';
@@ -108,7 +132,7 @@ export default class Code extends React.PureComponent<any, any> {
     return (
       <div className='mf-code' onKeyDown={this.keyHandle}>
         {code ? (
-          <CodeMirror
+          <UnControlled
             value={code}
             options={{
               mode: mode,
@@ -116,6 +140,7 @@ export default class Code extends React.PureComponent<any, any> {
               lineNumbers: true
             }}
             onChange={this.updateHandle}
+            onCursorActivity={this.autoComplete}
           />
         ) : null}
       </div>
