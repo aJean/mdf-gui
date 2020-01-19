@@ -4,12 +4,12 @@ import { message } from 'antd';
 import { UnControlled } from 'react-codemirror2';
 import Util from '../util/util';
 import File from '../util/file';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
 import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/css/css';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/javascript-hint';
+import 'codemirror/mode/css/css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
 import 'codemirror/addon/hint/show-hint.css';
 import './code.less';
 
@@ -19,6 +19,22 @@ import './code.less';
 
 const PubSub = require('pubsub-js');
 const CodeMirror = require('codemirror');
+const pty = require('node-pty');
+const Terminal = require('xterm').Terminal;
+const xterm = new Terminal({
+  rendererType: 'canvas',
+  cursorStyle: 'underline',
+  convertEol: true,
+  disableStdin: false
+});
+const ptyProcess = pty.spawn('ZSH', [], {
+  name: 'xterm-color',
+  cols: 80,
+  rows: 24,
+  cwd: process.env.HOME,
+  env: process.env
+});
+
 export default class Code extends React.PureComponent<any, any> {
   static getDerivedStateFromProps(props, state) {
     return {
@@ -26,9 +42,24 @@ export default class Code extends React.PureComponent<any, any> {
     };
   }
 
-  state = {
-    file: null
-  };
+  componentDidMount() {
+    xterm.onData(data => ptyProcess.write(data));
+
+    ptyProcess.on('data', data => {
+      if (xterm.init) {
+        xterm.write(data);
+      }
+      xterm.init = true;
+    });
+    // xterm.open(this.refs.xterm);
+  }
+
+  componentWillUnmount() {
+    xterm.dispose();
+    ptyProcess.destroy();
+  }
+
+  state = { file: null };
   // code to save
   value: string;
   // load code length
@@ -143,6 +174,7 @@ export default class Code extends React.PureComponent<any, any> {
             onCursorActivity={this.autoComplete}
           />
         ) : null}
+        <div ref="xterm" className='mf-xterm'></div>
       </div>
     );
   }

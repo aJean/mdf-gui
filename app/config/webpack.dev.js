@@ -117,6 +117,8 @@ module.exports = {
     yargs: 'commonjs yargs',
     'node-cmd': 'commonjs node-cmd',
     'fast-glob': 'commonjs fast-glob',
-    'directory-tree': 'commonjs directory-tree'
+    'directory-tree': 'commonjs directory-tree',
+    'xterm': 'commonjs xterm',
+    'node-pty': 'commonjs node-pty'
   }
 };
